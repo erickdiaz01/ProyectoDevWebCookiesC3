@@ -1,0 +1,9 @@
+Universidad de Antioquía - Misión Tic 2022
+Ciclo 3 - G 43-44-45
+Grupo: "Cookies"
+
+Descripción del proyecto: 
+Este proyecto consiste en la elaboración de una plataforma digital de e-commerce en la cual el usuario podrá registrarse y ver todos los productos disponibles con su precio y posteriormente su compra. Este archivo corresponde al Sprint 1 en donde el equipo se familiarizará con GitHub y sus herramientas de control de versiones.
+
+Presentación del equipo:
+
