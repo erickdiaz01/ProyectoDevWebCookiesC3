@@ -6,4 +6,5 @@ Descripción del proyecto:
 Este proyecto consiste en la elaboración de una plataforma digital de e-commerce en la cual el usuario podrá registrarse y ver todos los productos disponibles con su precio y posteriormente su compra. Este archivo corresponde al Sprint 1 en donde el equipo se familiarizará con GitHub y sus herramientas de control de versiones.
 
 Presentación del equipo:
+Erick Santiago Díaz Bueno: Estudio ingeniería química en la Universidad Nacional, tengo 21 años y estoy en sexto semestre, me gusta el desarrollo web y me gustaria ser full stack con enfasis en frontend.
 
