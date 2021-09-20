@@ -8,3 +8,4 @@ Este proyecto consiste en la elaboración de una plataforma digital de e-commerc
 Presentación del equipo:
 Erick Santiago Díaz Bueno: Estudio ingeniería química en la Universidad Nacional, tengo 21 años y estoy en sexto semestre, me gusta el desarrollo web y me gustaria ser full stack con enfasis en frontend.
 
+Edison Granados Avellaneda: Tengo 29 años, soy ingeniero químico y trabajo en la división de tratamiento químico de agua para la compañía NCH Colombia S.A. en la ciudad de Medellín. Tome la decisión de entrar en el mundo del desarrollo de software por los avances que se han dado en la tecnología y la importancia de su conocimiento en términos competitivos para la industria. Me gustaría continuar aprendidiendo acerca de backend y análisis de datos.
