@@ -9,3 +9,6 @@ Presentación del equipo:
 Erick Santiago Díaz Bueno: Estudio ingeniería química en la Universidad Nacional, tengo 21 años y estoy en sexto semestre, me gusta el desarrollo web y me gustaria ser full stack con enfasis en frontend.
 
 Edison Granados Avellaneda: Tengo 29 años, soy ingeniero químico y trabajo en la división de tratamiento químico de agua para la compañía NCH Colombia S.A. en la ciudad de Medellín. Tome la decisión de entrar en el mundo del desarrollo de software por los avances que se han dado en la tecnología y la importancia de su conocimiento en términos competitivos para la industria. Me gustaría continuar aprendidiendo acerca de backend y análisis de datos.
+
+Javier Hernán Figueroa Casas: Estudié y me grdué de ingenería de sistemas en la ciudad de Tunja - Boyacá hace un poco más de seis años. Desde ese tiempo, he venido trabajando en el CNE y la Registraduría Nacional, trabajado en donde no profundicé en el tema de programación. Por lo anterior y también sabiendo la actualidad en la que estamos viviendo, me pareció justo retomar este campo tan interesante de la programación y así aprender lo que más pueda
+para aplicarlo en mi vida y lograr nuevos proyectos. 
