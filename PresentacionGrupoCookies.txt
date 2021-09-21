@@ -12,3 +12,5 @@ Edison Granados Avellaneda: Tengo 29 años, soy ingeniero químico y trabajo en 
 
 Javier Hernán Figueroa Casas: Estudié y me grdué de ingenería de sistemas en la ciudad de Tunja - Boyacá hace un poco más de seis años. Desde ese tiempo, he venido trabajando en el CNE y la Registraduría Nacional, trabajado en donde no profundicé en el tema de programación. Por lo anterior y también sabiendo la actualidad en la que estamos viviendo, me pareció justo retomar este campo tan interesante de la programación y así aprender lo que más pueda
 para aplicarlo en mi vida y lograr nuevos proyectos. 
+
+Jessica Alejandra Riaño Lugo: Hace algunos años hice un tecnólogo en producción multimedia y actualmente estudio Administración Turística y hotelera en la Universidad del Tolima. Siempre me ha apasionado la tecnología, sin embargo, nunca me había adentrado al mundo de la programación. Considero que la programación y el análisis de datos son áreas cruciales para la superación profesional. 
