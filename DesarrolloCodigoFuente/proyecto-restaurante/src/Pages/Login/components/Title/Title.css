@@ -1,10 +1,10 @@
-.title-container{
-    color: black;
-    font-size: xx-large;
-    text-align: center;
-    font-weight: bolder;
+.title-container {
+  color: black;
+  font-size: xx-large;
+  text-align: center;
+  font-weight: bolder;
 }
-.title-label{
-    font-weight: bold;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.title-label {
+  font-weight: bold;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }

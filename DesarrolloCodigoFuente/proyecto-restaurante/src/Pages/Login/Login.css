@@ -1,69 +1,76 @@
-.login-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: rgb(221, 171, 64);
+}
+
+.login-content {
+  width: 85%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  position: absolute;
+}
+
+.submit-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.submit-button {
+  width: 50%;
+  height: 40px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  background-color: rgb(201, 109, 44);
+  color: black;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.submit-button:hover {
+  opacity: 0.8;
+  background-color: chocolate;
+}
+
+.label-error {
+  font-size: 12px;
+  color: rgb(124, 28, 33);
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-left: 10px;
+}
+
+.label-alert {
+  font-size: 14px;
+  color: rgb(124, 28, 33);
+  background-color: rgb(240, 199, 199);
+  width: fit-content;
+  height: fit-content;
+  padding: 5px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+@media (min-width: 320px) {
+  /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+  table,
+  p,
+  img {
+    padding-right: 1em;
     width: 100%;
-    height: 100vh;
-    background-color: rgb(221, 171, 64);
-}
-
-.login-content{
-    width: 85%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: auto;
-    position: absolute;
-}
-
-.submit-button-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-
-}
-
-.submit-button{
-    width: 90%;
-    height: 40px;
-    border-radius: 25px;
-    border: none;
-    outline: none;
-    background-color: rgb(201, 109, 44);
-    color: black;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.submit-button:hover{
-    opacity: 0.8;
-    background-color: chocolate;
-}
-
-.label-error{
-    font-size: 12px;
-    color:rgb(124, 28, 33);
-    width: fit-content;
-    height: fit-content;
-    padding: 10px;
-    box-sizing: border-box;
-    margin-left: 10px;
-
-}
-
-.label-alert{
-    font-size: 14px;
-    color:rgb(124, 28, 33);
-    background-color: rgb(240, 199, 199);
-    width: fit-content;
-    height: fit-content;
-    padding:  5px;
-    box-sizing: border-box;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    margin-top: 20px;
+  }
 }

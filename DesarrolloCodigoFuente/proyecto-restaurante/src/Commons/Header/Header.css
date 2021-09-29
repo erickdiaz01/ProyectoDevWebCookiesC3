@@ -1,13 +1,13 @@
-.logo-restaurante{
-    height: 50vh;
-    width: 50vw;
-    padding-right: 10px;
-    padding-top: 5px;
+.logo-restaurante {
+  height: 5%;
+  width: 5%;
+  padding-right: 2px;
+  padding-left: 10px;
 }
- 
-.titulo-navbar{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: bolder;
 
+.titulo-navbar {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bolder;
+  
 }
 

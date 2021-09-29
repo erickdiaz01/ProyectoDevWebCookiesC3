@@ -33,13 +33,14 @@ const Login = () => {
   }
 
   function ifMatch(param) {
-    if (param.user.length > 6 && param.password.length > 6) {
-      if (param.user === "Erick" && param.password === "Salem 14") {
+    if (param.user.length > 3 && param.password.length > 6) {
+      if (param.user === "ErickDiaz" && param.password === "Salem 14") {
         const { user, password } = param;
         let ac = { user, password };
         let account = JSON.stringify(ac);
         localStorage.setItem("account", account);
         setIsLogin(true);
+        setHasError(false);
       } else {
         setIsLogin(false);
         setHasError(true);
