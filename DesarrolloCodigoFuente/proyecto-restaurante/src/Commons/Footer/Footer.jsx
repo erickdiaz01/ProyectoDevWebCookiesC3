@@ -6,7 +6,7 @@ import "./Footer.css";
 
 const Footer = () => {
   return (
-    <div className="footer-dark">
+    <div className="footer-dark ">
       <footer>
         <div className="container">
           <div className="row">
@@ -49,20 +49,18 @@ const Footer = () => {
             </div>
             <div className="col item social">
               <a href="#" className="container-item">
-                <i className="icon ion-social-facebook"></i>
-              </a>
-              <a href="#" className="container-item" >
-                <i className="icon ion-social-twitter"></i>
+                <i className="bi bi-facebook"></i>
               </a>
               <a href="#" className="container-item">
-                <i className="icon ion-social-snapchat"></i>
+                <i className="bi bi-whatsapp"></i>
               </a>
+              
               <a href="#" className="container-item">
-                <i className="icon ion-social-instagram"></i>
+              <i className="bi bi-instagram" color="white"></i>
               </a>
             </div>
           </div>
-          <p className="copyright">Restaurante © 2021</p>
+          <p className="copyright">Joselito © 2021</p>
         </div>
       </footer>
     </div>

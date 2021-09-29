@@ -12,7 +12,7 @@ const Header = () => {
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
           <img src={Logo} alt="Logo" className="logo-restaurante" />
-          Restaurante
+          <h1 className="titulo-navbar">Joselito</h1>
         </a>
         <button
           className="navbar-toggler"
@@ -29,9 +29,9 @@ const Header = () => {
           id="offcanvasNavbar"
           aria-labelledby="offcanvasNavbarLabel"
         >
-          <div className="offcanvas-header">
+          <div className="offcanvas-header bg-dark">
             <h5 className="offcanvas-title" id="offcanvasNavbarLabel">
-              Offcanvas
+              Menú
             </h5>
             <button
               type="button"
@@ -40,7 +40,7 @@ const Header = () => {
               aria-label="Close"
             ></button>
           </div>
-          <div className="offcanvas-body">
+          <div className="offcanvas-body bg-dark">
             <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#">
@@ -88,17 +88,7 @@ const Header = () => {
                 </ul>
               </li>
             </ul>
-            <form className="d-flex">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
+            
           </div>
         </div>
       </div>
