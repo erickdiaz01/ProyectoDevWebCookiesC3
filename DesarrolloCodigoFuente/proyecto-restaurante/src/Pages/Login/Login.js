@@ -65,8 +65,8 @@ const Login = () => {
         <Title text="Iniciar sesión" />
         {hasError && (
           <label className="label-alert">
-            Su contraseña o usuario son incorrectos, o no existen en la
-            plataforma
+            Su Usuario o Contraseña son incorrectos, o no existen en la
+            plataforma.
           </label>
         )}
         <Label text="Usuario" />
