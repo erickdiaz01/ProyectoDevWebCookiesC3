@@ -1,12 +1,12 @@
 .register-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+    justify-content:center;
+    align-items:center;
+    position: -webkit-sticky;
     
     width: 100vw;
-    height: 200vh;
+    height: 220vh;
     background-color: rgb(221, 171, 64);
   }
   
@@ -18,9 +18,6 @@
     justify-content: center;
     margin: auto;
     position: absolute;
-    
-    
-    
   }
   
   .submit-button-container {
@@ -69,6 +66,7 @@
     border-radius: 5px;
     
   }
+  
   @media (min-width: 320px) {
     /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
     table,
