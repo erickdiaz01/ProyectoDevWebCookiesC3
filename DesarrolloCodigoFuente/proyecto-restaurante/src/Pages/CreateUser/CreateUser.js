@@ -16,7 +16,8 @@ const CreateUser = () => {
   const [fechaNacimientoInvalid, setFechaNacimientoInvalid] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const [emailValid, setEmailValid] = useState(false);
+  const [repeatPasswordError,setRepeatPasswordError]=useState(false);
+  const [emailInvalid, setEmailInvalid] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   function handleChange(name, value) {
@@ -33,25 +34,26 @@ const CreateUser = () => {
         setHasError(false);
       }
     } else if (name === "repeatPassword") {
-      if (value === password.value) {
-        setPasswordError(false);
-        setHasError(false);
+      if (passwordValid(value)) {
+        setRepeatPasswordError(false);
         setRepeatPassword(value);
       } else {
-        setPasswordError(true);
-        setHasError(true);
+        setRepeatPasswordError(true);
       }
     } else if (name === "email") {
-      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(value)) {
-        setEmailValid(true);
+      if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(value)) {
+        setEmailInvalid(false);
+        setEmail(value);
       } else {
-        setEmailValid(false);
+        setEmailInvalid(true);
+        
       }
     } else if (name === "fechaNacimiento") {
-      if (calcularEdad < 16) {
+      if (calcularEdad(value) < 16) {
         setFechaNacimientoInvalid(true);
       } else {
         setFechaNacimientoInvalid(false);
+        setFechaNacimiento(value);
       }
     }
   }
@@ -70,17 +72,16 @@ const CreateUser = () => {
     }
   }
   function ifMatch(param) {
-    if (param.user.length > 3 && param.password.length > 6) {
+    if (param.user.length > 3 && param.password.length >= 6) {
       if (param.user === "ErickDiaz" && param.password === "Salem 14") {
+        setIsRegister(true);
+        
+      } else {
         const { user, password } = param;
         let ac = { user, password };
         let account = JSON.stringify(ac);
         localStorage.setItem("account", account);
         setIsRegister(false);
-        setHasError(false);
-      } else {
-        setIsRegister(true);
-        setHasError(true);
       }
     } else {
       setHasError(true);
@@ -99,11 +100,30 @@ const CreateUser = () => {
 
     return edad;
   }
+  function passwordValid (password){
+    var p1= password
+    var p2= repeatPassword;
+    if (p1 !== p2){
+      return false
+    }else{
+      return true
+    }
+  }
 
   return (
     <div className="register-container">
       <div className="register-content">
         <Title text="Registrese" />
+        {hasError && (
+          <label className="label-alert">
+            Su Usuario o Contraseña son invalidos.
+          </label>
+        )}
+        {isRegister && (
+          <label className="label-alert">
+            Ya hay un registro con ese usuario.
+          </label>
+        )}
         <Label text="Usuario" />
         <Input
           attribute={{
@@ -127,6 +147,11 @@ const CreateUser = () => {
           param={passwordError}
           required
         />
+        {passwordError && (
+          <label className="label-error">
+            Contraseña invalida o incompleta
+          </label>
+        )}
         <Label text="Ingrese nuevamente su contraseña" />
         <Input
           attribute={{
@@ -136,9 +161,14 @@ const CreateUser = () => {
             placeholder: "Ingrese nuevamente su contraseña",
           }}
           handleChange={handleChange}
-          param={passwordError}
+          param={repeatPasswordError}
           required
         />
+        {repeatPasswordError && (
+          <label className="label-error">
+            Contraseñas no coinciden
+          </label>
+        )}
         <Label text="Ingrese su correo" />
         <Input
           attribute={{
@@ -148,19 +178,31 @@ const CreateUser = () => {
             placeholder: "Ingrese su correo",
           }}
           handleChange={handleChange}
-          param={passwordError}
+          param={emailInvalid}
           required
         />
+        {emailInvalid && (
+          <label className="label-error">
+            Correo no valido
+          </label>
+        )}
         <Label text="Fecha de nacimiento" />
-        <input
-          id="fechaNacimiento"
-          type="date"
-          name="fechaNacimiento"
-          value="fechaNacimiento"
-          onChange={(e) => handleChange(e.target.name, e.target.value)}
-          className={fechaNacimientoInvalid? "input-error" : "regular-style"}
+        <Input
+          attribute={{
+            id: "fechaNacimiento",
+            name: "fechaNacimiento",
+            type: "date",
+            placeholder: "Ingrese su fecha de nacimiento",
+          }}
+          handleChange={handleChange}
+          param={fechaNacimientoInvalid}
           required
-        />
+        /> 
+        {fechaNacimientoInvalid && (
+          <label className="label-error">
+            Tienes que ser mayor de 16 años
+          </label>
+        )}
         <Label text="Sexo" />
         <select required id="genero" name="genero" onChange={(e) => handleChange(e.target.name, e.target.value)}
           className="regular-style">

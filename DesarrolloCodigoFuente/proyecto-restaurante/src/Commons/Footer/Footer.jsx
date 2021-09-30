@@ -48,10 +48,10 @@ const Footer = () => {
               </p>
             </div>
             <div className="col item social">
-              <a href="#" className="container-item">
+              <a href="https://www.facebook.com/Cocinatipicajoselito/" className="container-item">
                 <i className="bi bi-facebook"></i>
               </a>
-              <a href="#" className="container-item">
+              <a href="https://api.whatsapp.com/send?phone=573148618598&text=Quisiera%20realizar%20un%20pedido" className="container-item">
                 <i className="bi bi-whatsapp"></i>
               </a>
               
