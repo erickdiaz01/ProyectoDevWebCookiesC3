@@ -8,14 +8,20 @@ import "./CreateUser.css";
 
 const CreateUser = () => {
   const [user, setUser] = useState("");
+  const [idRol, setIdRol] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [numCel, setNumCel] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
-  const [genero, setGenero] = useState("");
+  const [fechaRolIngresoHistorico, setFechaRolIngresoHistorico] = useState("");
+  const [sexo, setsexo] = useState("");
   const [rol, setRol] = useState("");
   const [fechaNacimientoInvalid, setFechaNacimientoInvalid] = useState(false);
+  const [fechaRolIngresoHistoricoInvalid, setFechaRolIngresoHistoricoInvalid] =
+    useState(false);
   const [isRegister, setIsRegister] = useState(false);
+  const [idRolError, setIdRolError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [repeatPasswordError, setRepeatPasswordError] = useState(false);
   const [emailInvalid, setEmailInvalid] = useState(false);
@@ -25,15 +31,12 @@ const CreateUser = () => {
   function handleChange(name, value) {
     if (name === "user") {
       setUser(value);
-      setHasError(false);
     } else if (name === "password") {
       if (value.length < 6) {
         setPasswordError(true);
-        setHasError(false);
       } else {
         setPassword(value);
         setPasswordError(false);
-        setHasError(false);
       }
     } else if (name === "repeatPassword") {
       if (passwordValid(value)) {
@@ -60,17 +63,36 @@ const CreateUser = () => {
         setFechaNacimientoInvalid(false);
         setFechaNacimiento(value);
       }
+    } else if (name === "numCel") {
+      setNumCel(value);
+    } else if (name === "idRol") {
+      if (value.length < 5 || !/^[0-9]+$/.test(value)) {
+        setIdRolError(true);
+      } else {
+        setIdRol(value);
+        setIdRolError(false);
+      }
+    } else {
+      if (calcularEdad(value) < 0) {
+        setFechaRolIngresoHistoricoInvalid(true);
+      } else {
+        setFechaRolIngresoHistoricoInvalid(false);
+        setFechaRolIngresoHistorico(value);
+      }
     }
   }
 
   function handleSubmit() {
     let account = {
       user,
+      idRol,
       password,
       repeatPassword,
       email,
+      numCel,
       fechaNacimiento,
-      genero,
+      fechaRolIngresoHistorico,
+      sexo,
       rol,
     };
     if (account) {
@@ -93,9 +115,9 @@ const CreateUser = () => {
     }
   }
 
-  function calcularEdad(fechaNacimiento) {
+  function calcularEdad(valor) {
     var hoy = new Date();
-    var cumpleanos = new Date(fechaNacimiento);
+    var cumpleanos = new Date(valor);
     var edad = hoy.getFullYear() - cumpleanos.getFullYear();
     var m = hoy.getMonth() - cumpleanos.getMonth();
 
@@ -105,10 +127,10 @@ const CreateUser = () => {
 
     return edad;
   }
-  function passwordValid(password) {
-    var p1 = password;
-    var p2 = repeatPassword;
-    if (p1 !== p2) {
+  function passwordValid(p) {
+    var contrasena = document.getElementsByName("password").values;
+    var p2 = p;
+    if (contrasena !== p2) {
       return false;
     } else {
       return true;
@@ -119,12 +141,8 @@ const CreateUser = () => {
     <div>
       <div className="register-container">
         <div className="register-content">
-          <Title text="Registrese" />
-          {hasError && (
-            <label className="label-alert">
-              Su Usuario o Contraseña son invalidos.
-            </label>
-          )}
+          <Title text="Registro de roles" />
+
           {isRegister && (
             <label className="label-alert">
               Ya hay un registro con ese usuario.
@@ -141,6 +159,19 @@ const CreateUser = () => {
             handleChange={handleChange}
             required
           />
+          <Label text="Número de identificación" />
+          <Input
+            attribute={{
+              id: "idRol",
+              name: "idRol",
+              type: "text",
+              placeholder: "Ingrese su ID",
+            }}
+            handleChange={handleChange}
+            param={idRolError}
+            required
+          />
+          {idRolError && <label className="label-error">ID no valido</label>}
           <Label text="Contraseña" />
           <Input
             attribute={{
@@ -209,8 +240,8 @@ const CreateUser = () => {
           <div className="input-container">
             <select
               required
-              id="genero"
-              name="genero"
+              id="sexo"
+              name="sexo"
               onChange={(e) => handleChange(e.target.name, e.target.value)}
               className="regular-style"
             >
@@ -229,14 +260,30 @@ const CreateUser = () => {
               onChange={(e) => handleChange(e.target.name, e.target.value)}
               className="regular-style"
             >
-              <option value="usuario">Usuario</option>
-              <option value="vendedor" disabled>
-                Vendedor
+              <option value="cajero">Cajero</option>
+              <option value="vendedor">Vendedor</option>
+              <option value="mesero">Mesero</option>
+              <option value="domiciliario">Domiciliario</option>
+              <option value="administrador" disabled>
+                Administrador
               </option>
-              <option value="administrador" disabled>Administrador</option>
             </select>
           </div>
-
+          <Label text="Fecha de ingreso" />
+          <Input
+            attribute={{
+              id: "fechaRolIngresoHistorico",
+              name: "fechaRolIngresoHistorico",
+              type: "date",
+              placeholder: "Ingrese su fecha de ingreso",
+            }}
+            handleChange={handleChange}
+            param={fechaRolIngresoHistoricoInvalid}
+            required
+          />
+          {fechaRolIngresoHistoricoInvalid && (
+            <label className="label-error">Fecha de ingreso invalida</label>
+          )}
           <div className="submit-button-container">
             <button onClick={handleSubmit} className="submit-button">
               Registrarse
