@@ -20,6 +20,16 @@
     margin: auto;
     position: absolute;
   }
+.tabla{
+  justify-content: center;
+  align-items: center;
+  flex-direction:column;
+  position: relative;
+  margin-top: 35px;
+  background-color: aliceblue;
+  
 
+
+}
 
  
