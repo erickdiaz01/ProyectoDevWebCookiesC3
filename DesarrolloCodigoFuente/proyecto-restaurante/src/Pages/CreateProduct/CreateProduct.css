@@ -1,0 +1,36 @@
+.createProduct-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: -webkit-sticky;
+
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(221, 171, 64);
+}
+
+.createProduct-content {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  position: absolute;
+}
+
+.regular-style {
+  width: 100%;
+  height: 35px;
+  border-radius: 25px;
+  border: none;
+  padding: 0 10px 0 20px;
+  box-sizing: border-box;
+
+  color: black;
+  font-size: 14px;
+  outline: none;
+  font-weight: bold;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}

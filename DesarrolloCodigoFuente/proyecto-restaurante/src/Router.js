@@ -5,6 +5,8 @@ import Login from "./Pages/Login/Login";
 import CreateUser from "./Pages/CreateUser/CreateUser";
 import ModuloAdminVentas from "./Pages/ModuloAdminVentas/ModuloAdminVentas";
 import GestionPedidos from "./Pages/GestionPedidos/GestionPedidos";
+import CreateProduct from "./Pages/CreateProduct/CreateProduct";
+import ModificarProducto from "./Pages/ModificarProducto/ModificarProducto";
 
 const Router = () => {
   return (
@@ -15,6 +17,8 @@ const Router = () => {
         <Route path="/login" component={Login} />
         <Route path="/gestionventas" component={ModuloAdminVentas}/>
         <Route path="/gestionpedidos" component={GestionPedidos}/>
+        <Route path="/crearproducto" component={CreateProduct}/>
+        <Route path="/modificarproducto" component={ModificarProducto}/>
       </Switch>
     </BrowserRouter>
   );

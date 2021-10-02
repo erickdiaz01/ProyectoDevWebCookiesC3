@@ -10,6 +10,7 @@ const Input = ({attribute, handleChange, param})=>{
             name={attribute.name}
             placeholder={attribute.placeholder}
             type={attribute.type}
+            accept={attribute.accept}
             onChange={(e)=> handleChange(e.target.name,e.target.value)}
             className={param ?"input-error":"regular-style"}
             />

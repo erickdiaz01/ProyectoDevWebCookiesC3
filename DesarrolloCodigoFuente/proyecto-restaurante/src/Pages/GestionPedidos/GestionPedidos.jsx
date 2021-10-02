@@ -7,6 +7,7 @@ import Input from "../CreateUser/components/Input/Input";
 import "./GestionPedidos.css";
 import Title from "../CreateUser/components/Title/Title";
 const GestionPedidos = () => {
+  
   return (
     <div className="gestion-pedidos-container">
       <div className="gestion-pedidos-content">

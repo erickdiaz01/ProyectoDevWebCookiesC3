@@ -27,12 +27,12 @@ function Navegacion() {
                 aria-labelledby="navbarDarkDropdownMenuLink"
               >
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="/crearproducto">
                     Crear producto
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="/modificarproducto">
                     Modificar producto
                   </a>
                 </li>

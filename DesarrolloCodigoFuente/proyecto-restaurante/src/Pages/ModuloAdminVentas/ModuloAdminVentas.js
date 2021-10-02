@@ -151,12 +151,12 @@ const ModuloAdminVentas = () => {
                 </div>
               </section>
               <section className="row">
-                <Label text="Descripción del producto" />
+                <Label text="Comentarios o peticiones del producto" />
                 <textarea
                   rows="10"
                   cols="12"
                   className="regular-style"
-                  placeholder="Ingrese la descripción del producto"
+                  placeholder="Ingrese alguna peticion especial sobre el producto"
                 ></textarea>
               </section>
               <div className="submit-button-container">
