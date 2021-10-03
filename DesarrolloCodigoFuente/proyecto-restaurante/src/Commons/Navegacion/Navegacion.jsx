@@ -98,11 +98,7 @@ function Navegacion() {
                     Ver clientes
                   </a>
                 </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Estadisticas clientes
-                  </a>
-                </li>
+
                 <li>
                   <a className="dropdown-item" href="#">
                     Preguntas y comentarios

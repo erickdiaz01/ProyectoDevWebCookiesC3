@@ -189,7 +189,7 @@ const CreateUser = () => {
               Contraseña invalida o incompleta
             </label>
           )}
-          <Label text="Ingrese nuevamente su contraseña" />
+          <Label text="Confirme  su contraseña" />
           <Input
             attribute={{
               id: "repeatPassword",
@@ -204,7 +204,7 @@ const CreateUser = () => {
           {repeatPasswordError && (
             <label className="label-error">Contraseñas no coinciden</label>
           )}
-          <Label text="Ingrese su correo" />
+          <Label text="Correo electronico" />
           <Input
             attribute={{
               id: "email",
@@ -287,6 +287,21 @@ const CreateUser = () => {
           <div className="submit-button-container">
             <button onClick={handleSubmit} className="submit-button">
               Registrarse
+            </button>
+          </div>
+         
+          <div className="mb-3 text-center text-dark mt-3" style={{ fontWeight:"bolder"}}>
+            or register using
+          </div>
+          <div className="d-flex justify-content-around mb-3">
+            <button type="submit" className="btn btn-danger btn-rounded">
+              <i className="bi bi-google"></i>&nbsp;&nbsp;Google
+            </button>
+            <button type="submit" className="btn btn-primary btn-rounded">
+              <i className="bi bi-facebook"></i>&nbsp;&nbsp;Facebook
+            </button>
+            <button type="submit" className="btn btn-primary btn-rounded">
+              <i className="bi bi-linkedin"></i>&nbsp;&nbsp;Linkedin
             </button>
           </div>
         </div>
