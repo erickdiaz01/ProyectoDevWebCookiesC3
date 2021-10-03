@@ -1,0 +1,10 @@
+.navegacion {
+  
+  
+  position: relative;
+  justify-self: normal;
+  align-items: initial;
+  -ms-flex-align: baseline;
+  position: fixed top;
+ 
+}

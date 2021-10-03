@@ -1,0 +1,35 @@
+.moduloAdminVentas-container {
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    position: -webkit-sticky;
+    
+    width: 100vw;
+    height: 200vh;
+    background-color: rgb(221, 171, 64);
+  }
+
+
+  .moduloAdminVentas-content {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+    position: absolute;
+  }
+.tabla{
+  justify-content: center;
+  align-items: center;
+  flex-direction:column;
+  position: relative;
+  margin-top: 35px;
+  background-color: aliceblue;
+  
+
+
+}
+
+ 
