@@ -7,6 +7,7 @@ import ModuloAdminVentas from "./Pages/ModuloAdminVentas/ModuloAdminVentas";
 import GestionPedidos from "./Pages/GestionPedidos/GestionPedidos";
 import CreateProduct from "./Pages/CreateProduct/CreateProduct";
 import ModificarProducto from "./Pages/ModificarProducto/ModificarProducto";
+import HistoricoPedidos from "./Pages/HistoricoPedidos/HistoricoPedidos";
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
         <Route path="/gestionpedidos" component={GestionPedidos}/>
         <Route path="/crearproducto" component={CreateProduct}/>
         <Route path="/modificarproducto" component={ModificarProducto}/>
+        <Route path="/historico-pedidos" component={HistoricoPedidos}/>
       </Switch>
     </BrowserRouter>
   );

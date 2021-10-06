@@ -68,7 +68,7 @@ function Navegacion() {
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="/historico-pedidos">
                     Historico de pedidos
                   </a>
                 </li>
