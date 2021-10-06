@@ -135,7 +135,7 @@ function Navegacion() {
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="/verusuarios">
                     Ver usuarios
                   </a>
                 </li>

@@ -8,6 +8,7 @@ import GestionPedidos from "./Pages/GestionPedidos/GestionPedidos";
 import CreateProduct from "./Pages/CreateProduct/CreateProduct";
 import ModificarProducto from "./Pages/ModificarProducto/ModificarProducto";
 import HistoricoPedidos from "./Pages/HistoricoPedidos/HistoricoPedidos";
+import VerUsuarios from "./Pages/VerUsuarios/VerUsuarios";
 
 const Router = () => {
   return (
@@ -21,6 +22,9 @@ const Router = () => {
         <Route path="/crearproducto" component={CreateProduct}/>
         <Route path="/modificarproducto" component={ModificarProducto}/>
         <Route path="/historico-pedidos" component={HistoricoPedidos}/>
+        <Route path="/verusuarios" component={VerUsuarios}/>
+
+
       </Switch>
     </BrowserRouter>
   );

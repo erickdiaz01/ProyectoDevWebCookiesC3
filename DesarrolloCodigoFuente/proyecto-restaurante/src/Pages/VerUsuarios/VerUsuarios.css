@@ -1,0 +1,29 @@
+.ver-usuarios-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: -webkit-sticky;
+  
+    width: 100vw;
+    height: 150vh;
+    background-color: rgb(221, 171, 64);
+  }
+  
+  .ver-usuarios-content {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+    position: absolute;
+  }
+  .tabla {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    margin-top: 35px;
+    background-color: rgb(189, 192, 190);
+  }
