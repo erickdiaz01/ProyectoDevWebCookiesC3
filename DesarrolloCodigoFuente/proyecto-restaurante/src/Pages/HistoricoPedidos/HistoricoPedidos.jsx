@@ -8,82 +8,141 @@ import Title from "../CreateUser/components/Title/Title";
 import "./historicopedidos.css";
 
 const HistoricoPedidos = () => {
-
-    return (
-        <div className="bg-prim">
-            <div className="container">
-                <div className="row">
-                    <div className="col-12 pt-5 ">
-                        <h1 className="text-center">Histórico de Pedidos </h1>
-                        <div className="table-responsive pb-5">
-                            <table class="table table-dark table-sm pt-3">
-
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Producto</th>
-                                        <th scope="col" className="text-center">Cantidad</th>
-                                        <th scope="col" className="text-center"> Precio Unidad</th>
-                                        <th scope="col" className="text-center">Precio Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Frijolada</td>
-                                        <td className="text-center">3</td>
-                                        <td className="text-center">$10.000</td>
-                                        <td className="text-center">$30.000</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Frijolada</td>
-                                        <td className="text-center">3</td>
-                                        <td className="text-center">$10.000</td>
-                                        <td className="text-center">$30.000</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Frijolada</td>
-                                        <td className="text-center">3</td>
-                                        <td className="text-center">$10.000</td>
-                                        <td className="text-center">$30.000</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Frijolada</td>
-                                        <td className="text-center">3</td>
-                                        <td className="text-center">$10.000</td>
-                                        <td className="text-center">$30.000</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Frijolada</td>
-                                        <td className="text-center">3</td>
-                                        <td className="text-center">$10.000</td>
-                                        <td className="text-center">$30.000</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Frijolada</td>
-                                        <td className="text-center">3</td>
-                                        <td className="text-center">$10.000</td>
-                                        <td className="text-center">$30.000</td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="4" className="table-active text-end"><h3 className="pe-3">Gran Total</h3></td>
-                                        <td className="text-center">$90.000</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+  return (
+    <div className="gestion-pedidos-container">
+      <div className="gestion-pedidos-content">
+        <header className="title-container">
+          <Title text="Historico de pedidos" />
+        </header>
+        <section className="row">
+          <div className="col-md-4">
+            <Label text="ID de pedido" />
+            <Input
+              attribute={{
+                id: "busquedaIdPedidoHistorico",
+                name: "busquedaIdPedidoHistorico",
+                type: "search",
+                placeholder: "Busque por ID del pedido",
+              }}
+              //    handleChange={handleChange}
+              // param={fechaRolIngresoHistoricoInvalid}
+            />
+          </div>
+          <div className="col-md-4">
+            <Label text="Num. Documento del cliente" />
+            <Input
+              attribute={{
+                id: "busquedaDocumentoCliente",
+                name: "busquedaDocumentoCliente",
+                type: "search",
+                placeholder: "Busque por # de documento del cliente",
+              }}
+              //    handleChange={handleChange}
+              // param={fechaRolIngresoHistoricoInvalid}
+            />
+          </div>
+          <div className="col-md-3">
+            <Label text="Nombre del cliente" />
+            <Input
+              attribute={{
+                id: "busquedaNombreCliente",
+                name: "busquedaNombreCliente",
+                type: "search",
+                placeholder: "Busque por nombre del cliente",
+              }}
+              // handleChange={handleChange}
+              // param={fechaRolIngresoHistoricoInvalid}
+            />
+          </div>
+          <div className="col-md-1">
+            <div className="search-button-container">
+              <button
+                //   onClick={handleSubmit}
+                className="search-button"
+              >
+                <i class="bi bi-search"></i>
+              </button>
             </div>
-        </div>
-    );
+          </div>
+        </section>
+        <section className="row">
+          <Table striped bordered hover responsive className="tabla">
+            <thead>
+              <tr>
+                <th>#ID Pedido</th>
+                <th>Fecha del pedido</th>
+                <th>Cliente</th>
+                <th>Descripcion del pedido</th>
+                <th>Valor del pedido</th>
+                <th>Editar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>535</td>
+                <td>07/10/2021</td>
+
+                <td>Erick Diaz</td>
+                <td>
+                  Arroz amarillo con verduras y pollo, Mondongo con arroz aparte{" "}
+                </td>
+                <td>31.000</td>
+                <td>
+                  <a href="#">
+                    <i className="bi bi-pencil-square"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td>534</td>
+                <td>06/10/2021</td>
+                
+                <td>Carlos Rodriguez</td>
+                <td>Pollo, Gaseosa 1.5L, Carne asada</td>
+                <td>39.000</td>
+                <td>
+                  <a href="#">
+                    <i className="bi bi-pencil-square"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td>533</td>
+                <td>06/10/2021</td>
+                
+                <td>Nicol Quiñonez</td>
+                <td>
+                  Pechuga a la plancha x2, Carne asada, Ajiaco x3, Jarra
+                  limonada{" "}
+                </td>
+                <td>52.000</td>
+                <td>
+                  <a href="#">
+                    <i className="bi bi-pencil-square"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td>532</td>
+                <td>05/10/2021</td>
+                
+                <td>Alvaro Rueda</td>
+                <td>
+                   Salchipas especial
+                </td>
+                <td>10.000</td>
+                <td>
+                  <a href="#">
+                    <i className="bi bi-pencil-square"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </section>
+      </div>
+    </div>
+  );
 };
 
 export default HistoricoPedidos;

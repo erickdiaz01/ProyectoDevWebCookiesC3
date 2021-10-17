@@ -45,7 +45,7 @@ const VerUsuarios = () => {
               </select>
             </div>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <Label text="Usuario" />
             <Input
               attribute={{
@@ -57,6 +57,16 @@ const VerUsuarios = () => {
               // handleChange={handleChange}
               // param={fechaRolIngresoHistoricoInvalid}
             />
+          </div>
+          <div className="col-md-1">
+            <div className="search-button-container">
+              <button
+                //   onClick={handleSubmit}
+                className="search-button"
+              >
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
           </div>
         </section>
         <section className="row">

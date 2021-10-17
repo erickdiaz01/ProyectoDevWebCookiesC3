@@ -1,3 +1,49 @@
-.bg-prim {
-    background-color: rgb(221, 171, 64);
+.gestion-pedidos-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: -webkit-sticky;
+
+  width: 100vw;
+  height: 150vh;
+  background-color: rgb(221, 171, 64);
+}
+
+.gestion-pedidos-content {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  
+  
+  margin: auto;
+  position: absolute;
+}
+
+.search-button-container {
+  display: flex;
+  
+  align-items: center;
+  margin-top:25px;
+  margin-left: 0;
+  
+  
+  
+}
+
+.search-button {
+  width: 80%;
+  height: 50%;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  background-color: rgb(201, 109, 44);
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.submit-button:hover {
+  opacity: 0.8;
+  background-color: chocolate;
 }

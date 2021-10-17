@@ -100,6 +100,20 @@ const Login = () => {
             Ingresar
           </button>
         </div>
+        <div className="mb-3 text-center text-dark mt-3" style={{ fontWeight:"bolder"}}>
+            or login using
+          </div>
+          <div className="d-flex justify-content-around mb-3">
+            <button type="submit" className="btn btn-danger btn-rounded">
+              <i className="bi bi-google"></i>&nbsp;&nbsp;Google
+            </button>
+            <button type="submit" className="btn btn-primary btn-rounded">
+              <i className="bi bi-facebook"></i>&nbsp;&nbsp;Facebook
+            </button>
+            <button type="submit" className="btn btn-primary btn-rounded">
+              <i className="bi bi-linkedin"></i>&nbsp;&nbsp;Linkedin
+            </button>
+          </div>
       </div>
     </div>
   );
