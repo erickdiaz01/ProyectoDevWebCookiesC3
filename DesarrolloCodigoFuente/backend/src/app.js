@@ -14,16 +14,16 @@ app.use(express.json());
 
 
 //routes
-app.get("/",(req,res)=>res.send())
-app.get("/registeruser",(req,res)=>res.send())
-app.get("/login",(req,res)=>res.send())
-app.get("/api/gestionventas",(req,res)=>res.send())
-app.get("/api/gestionpedidos",(req,res)=>res.send())
-app.get("/api/crearproducto",(req,res)=>res.send())
-app.get("/api/modificarproducto",(req,res)=>res.send())
-app.get("/api/historico-pedidos",(req,res)=>res.send())
-app.get("/api/verusuarios",(req,res)=>res.send())
-app.get("/api/gestionusuarios",(req,res)=>res.send())
+app.use("/",require("./routes/createUser"))
+app.use("/registeruser",require("./routes/createUser"))
+app.use("/login",require("./routes/login"))
+app.use("/api/gestionventas",require("./routes/moduloAdminVentas"))
+app.use("/api/gestionpedidos",require("./routes/gestionPedidos"))
+app.use("/api/crearproducto",require("./routes/createProduct"))
+app.use("/api/modificarproducto",require("./routes/modificarProducto"))
+app.use("/api/historico-pedidos",require("./routes/historicoPedidos"))
+app.use("/api/verusuarios",require("./routes/verUsuarios"))
+app.use("/api/gestionusuarios",require("./routes/gestionUsuarios"))
 
 
 
