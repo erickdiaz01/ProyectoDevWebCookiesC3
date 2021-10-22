@@ -10,17 +10,17 @@ const createProductSchema = new Schema({
     type: String,
     required: true,
   },
-  cantidad:Int8Array,
+  cantidad:Number,
 
   costo: {
-    type: Float32Array,
+    type:Number,
     required: true,
   },
   descripcion:{
       type:String,
       required:true
   },
-  imagen:File
+  imagen:String
 }, {
     timestamps: true
 });

@@ -6,10 +6,10 @@ const agregarProductSchema = new Schema({
       required:true
   },
   cantidad:{
-      type:Int16Array,
+      type:Number,
       required:true
   },
-  valor:Float32Array,
+  valor:Number,
   fechaVenta:Date,
   metodoPago:{
       type:String,
@@ -22,9 +22,12 @@ const visualizarFacturaSchema = new Schema({
     idProducto:String,
     nombre:String,
     descripcion:String,
-    cantidad:Int16Array,
-    valor:Float32Array,
+    cantidad:Number,
+    valor:Number,
    
+},{
+    timestamps:true
 })
-
-module.exports = model("agregarProduct", agregarProductSchema) , model("visualizarFactura", visualizarFacturaSchema);
+const agregarProducto = model("agregarProduct", agregarProductSchema) ;
+const visualizarFactura= model("visualizarFactura", visualizarFacturaSchema);
+module.exports = {agregarProducto, visualizarFactura}

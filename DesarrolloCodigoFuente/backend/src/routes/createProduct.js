@@ -2,9 +2,9 @@ const { Router } = require("express");
 const res = require("express/lib/response");
 const router = Router();
 
-const {getProduct,createProduct}=require("../controllers/createProduct.controller")
+const {crearProducto}=require("../controllers/createProduct.controller")
 
 
-router.route("/").get(getProduct).post(createProduct);
+router.route("/").post(crearProducto);
 
 module.exports = router;

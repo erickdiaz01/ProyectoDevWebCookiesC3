@@ -10,11 +10,15 @@ const busquedaHistoricoPedidosSchema = new Schema({
 });
 
 const historicoPedidosSchema = new Schema({
-    idPedido:String,
-    fecha:Date,
-    cliente:String,
-    descripcion:String,
-    valor:Float32Array
-})
-
-module.exports = model("busquedaHistoricoPedidos", busquedaHistoricoPedidosSchema) , model("historicoPedidos", historicoPedidosSchema);
+  idPedido: String,
+  fecha: Date,
+  cliente: String,
+  descripcion: String,
+  valor: Number,
+});
+const busquedaHistoricoPedidos = model(
+  "busquedaHistoricoPedidos",
+  busquedaHistoricoPedidosSchema
+);
+const historicoPedidos = model("historicoPedidos", historicoPedidosSchema);
+module.exports = { busquedaHistoricoPedidos, historicoPedidos };

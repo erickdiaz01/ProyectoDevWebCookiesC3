@@ -14,8 +14,10 @@ const modificarProductSchema = new Schema({
     categoria:String,
     nombre:String,
     descripcion:String,
-    valor:Float32Array,
-    stock:Int16Array
+    valor:Number,
+    stock:Number
+},{
+    timestamps:true
 })
 
 module.exports = model("busquedaProducto", busquedaProductSchema) , model("modificarProducto", modificarProductSchema);
