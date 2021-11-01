@@ -1,36 +1,38 @@
 import React, { useState } from "react";
-
+import { crearUsuario } from "../../services/Auth.service";
 import Title from "./components/Title/Title";
 import Label from "../Login/components/Label/Label";
-import Input from "./components/Input/Input";
+import Input from "../Login/components/Input/Input";
 //Importación de estilos
 import "./CreateUser.css";
+import useAuth from "../../hooks/useAuth";
+import axios from "axios";
 
 const CreateUser = () => {
+  const auth = useAuth();
+
   const [user, setUser] = useState("");
-  const [idRol, setIdRol] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [numCel, setNumCel] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
-  const [fechaRolIngresoHistorico, setFechaRolIngresoHistorico] = useState("");
-  const [sexo, setsexo] = useState("");
-  const [rol, setRol] = useState("");
+  const [rol, setRol] = useState();
+  const [identificacion, setIdentificacion] = useState("");
+  const [ingreso, setIngreso] = useState("");
+  const [sexo, setSexo] = useState("");
   const [fechaNacimientoInvalid, setFechaNacimientoInvalid] = useState(false);
   const [fechaRolIngresoHistoricoInvalid, setFechaRolIngresoHistoricoInvalid] =
     useState(false);
   const [isRegister, setIsRegister] = useState(false);
-  const [idRolError, setIdRolError] = useState(false);
+  const [identificacionError, setIdRolError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [repeatPasswordError, setRepeatPasswordError] = useState(false);
   const [emailInvalid, setEmailInvalid] = useState(false);
-  const [rolInvalid, setRolInvalid] = useState(false);
-  const [hasError, setHasError] = useState(false);
 
   function handleChange(name, value) {
     if (name === "user") {
       setUser(value);
+      console.log(user);
     } else if (name === "password") {
       if (value.length < 6) {
         setPasswordError(true);
@@ -63,13 +65,11 @@ const CreateUser = () => {
         setFechaNacimientoInvalid(false);
         setFechaNacimiento(value);
       }
-    } else if (name === "numCel") {
-      setNumCel(value);
-    } else if (name === "idRol") {
+    } else if (name === "identificacion") {
       if (value.length < 5 || !/^[0-9]+$/.test(value)) {
         setIdRolError(true);
       } else {
-        setIdRol(value);
+        setIdentificacion(value);
         setIdRolError(false);
       }
     } else {
@@ -77,42 +77,26 @@ const CreateUser = () => {
         setFechaRolIngresoHistoricoInvalid(true);
       } else {
         setFechaRolIngresoHistoricoInvalid(false);
-        setFechaRolIngresoHistorico(value);
+        setIngreso(value);
       }
     }
   }
 
-  function handleSubmit() {
-    let account = {
-      user,
-      idRol,
-      password,
-      repeatPassword,
-      email,
-      numCel,
-      fechaNacimiento,
-      fechaRolIngresoHistorico,
-      sexo,
-      rol,
+  async function handleSubmit() {
+    let newUser = {
+      name: user,
+      identificacion: identificacion,
+      password: password,
+      confirmacionPassword: repeatPassword,
+      email: email,
+      nacimiento: fechaNacimiento,
+      fechaIngreso: ingreso,
+      sexo: sexo,
+      rol: rol,
     };
-    if (account) {
-      ifMatch(account);
-    }
-  }
-  function ifMatch(param) {
-    if (param.user.length > 3 && param.password.length >= 6) {
-      if (param.user === "ErickDiaz" && param.password === "Salem 14") {
-        setIsRegister(true);
-      } else {
-        const { user, password } = param;
-        let ac = { user, password };
-        let account = JSON.stringify(ac);
-        localStorage.setItem("account", account);
-        setIsRegister(false);
-      }
-    } else {
-      setHasError(true);
-    }
+    
+    axios.post("http://localhost:4000/api/auth/crearusuario", newUser);
+    console.log(newUser);
   }
 
   function calcularEdad(valor) {
@@ -127,10 +111,8 @@ const CreateUser = () => {
 
     return edad;
   }
-  function passwordValid(p) {
-    var contrasena = document.getElementsByName("password").values;
-    var p2 = p;
-    if (contrasena !== p2) {
+  function passwordValid(value) {
+    if (password !== value) {
       return false;
     } else {
       return true;
@@ -157,21 +139,19 @@ const CreateUser = () => {
               placeholder: "Ingrese un usuario",
             }}
             handleChange={handleChange}
-            required
           />
           <Label text="Número de identificación" />
           <Input
             attribute={{
-              id: "idRol",
-              name: "idRol",
+              id: "identificacion",
+              name: "identificacion",
               type: "text",
               placeholder: "Ingrese su ID",
             }}
             handleChange={handleChange}
-            param={idRolError}
-            required
+            param={identificacionError}
           />
-          {idRolError && <label className="label-error">ID no valido</label>}
+          {identificacionError && <label className="label-error">ID no valido</label>}
           <Label text="Contraseña" />
           <Input
             attribute={{
@@ -182,7 +162,6 @@ const CreateUser = () => {
             }}
             handleChange={handleChange}
             param={passwordError}
-            required
           />
           {passwordError && (
             <label className="label-error">
@@ -199,7 +178,6 @@ const CreateUser = () => {
             }}
             handleChange={handleChange}
             param={repeatPasswordError}
-            required
           />
           {repeatPasswordError && (
             <label className="label-error">Contraseñas no coinciden</label>
@@ -214,7 +192,6 @@ const CreateUser = () => {
             }}
             handleChange={handleChange}
             param={emailInvalid}
-            required
           />
           {emailInvalid && (
             <label className="label-error">Correo no valido</label>
@@ -229,7 +206,6 @@ const CreateUser = () => {
             }}
             handleChange={handleChange}
             param={fechaNacimientoInvalid}
-            required
           />
           {fechaNacimientoInvalid && (
             <label className="label-error">
@@ -242,7 +218,7 @@ const CreateUser = () => {
               required
               id="sexo"
               name="sexo"
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              handleChange={handleChange}
               className="regular-style"
             >
               <option value="M">Mujer</option>
@@ -257,7 +233,7 @@ const CreateUser = () => {
               required
               id="rol"
               name="rol"
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
+              handleChange={handleChange}
               className="regular-style"
             >
               <option value="cajero">Cajero</option>
@@ -269,28 +245,17 @@ const CreateUser = () => {
               </option>
             </select>
           </div>
-          <Label text="Fecha de ingreso" />
-          <Input
-            attribute={{
-              id: "fechaRolIngresoHistorico",
-              name: "fechaRolIngresoHistorico",
-              type: "date",
-              placeholder: "Ingrese su fecha de ingreso",
-            }}
-            handleChange={handleChange}
-            param={fechaRolIngresoHistoricoInvalid}
-            required
-          />
-          {fechaRolIngresoHistoricoInvalid && (
-            <label className="label-error">Fecha de ingreso invalida</label>
-          )}
+         
           <div className="submit-button-container">
             <button onClick={handleSubmit} className="submit-button">
               Registrarse
             </button>
           </div>
-         
-          <div className="mb-3 text-center text-dark mt-3" style={{ fontWeight:"bolder"}}>
+
+          <div
+            className="mb-3 text-center text-dark mt-3"
+            style={{ fontWeight: "bolder" }}
+          >
             or register using
           </div>
           <div className="d-flex justify-content-around mb-3">

@@ -11,7 +11,10 @@
   grid-row: span;
   float:left;
 }
-
+.container-fluid{
+  width: 100%;
+  padding: 0;
+}
 .titulo-navbar {
   
   

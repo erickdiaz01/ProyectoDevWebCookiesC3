@@ -1,11 +1,13 @@
 import React from "react";
-
+import useAuth from '../../hooks/useAuth'
 import "./Navegacion.css";
 
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
 function Navegacion() {
+  const auth = useAuth();
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -27,13 +29,13 @@ function Navegacion() {
                 aria-labelledby="navbarDarkDropdownMenuLink"
               >
                 <li>
-                  <a className="dropdown-item" href="/crearproducto">
+                  <a className="dropdown-item" href="/productos/crearproducto">
                     Crear producto
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="/modificarproducto">
-                    Modificar producto
+                  <a className="dropdown-item" href="/productos/verproductos">
+                    Ver productos
                   </a>
                 </li>
               </ul>
@@ -51,24 +53,24 @@ function Navegacion() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Venta
+                Ventas
               </a>
               <ul
                 className="dropdown-menu dropdown-menu-dark"
                 aria-labelledby="navbarDarkDropdownMenuLink"
               >
                 <li>
-                  <a className="dropdown-item" href="/gestionventas">
+                  <a className="dropdown-item" href="/ventas/crearventa">
                     Crear venta
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="/gestionpedidos">
+                  <a className="dropdown-item" href="/ventas/gestionpedidos">
                     Gestionar pedidos
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="/historico-pedidos">
+                  <a className="dropdown-item" href="/ventas/historicopedidos">
                     Historico de pedidos
                   </a>
                 </li>
@@ -126,17 +128,17 @@ function Navegacion() {
                 aria-labelledby="navbarDarkDropdownMenuLink"
               >
                 <li>
-                  <a className="dropdown-item" href="/registeruser">
+                  <a className="dropdown-item" href="/auth/crearusuario">
                     Crear usuario
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="/verusuarios">
+                  <a className="dropdown-item" href="/auth/verusuarios">
                     Ver usuarios
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="gestionusuarios">
+                  <a className="dropdown-item" href="/auth/gestionusuarios">
                     Gestionar usuarios
                   </a>
                 </li>
@@ -149,8 +151,9 @@ function Navegacion() {
             <button class="btn btn-dark me-md-2" type="button">
               Generar reportes
             </button>
-            <button class="btn btn-dark" type="button">
-              Registrar Pago
+            <button className="btn btn-outline-danger" onClick={auth.logout}>
+                <i className="fas fa-sign-out-alt"></i>
+                <span> Salir</span>
             </button>
           </div>
         </a>

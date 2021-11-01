@@ -11,6 +11,7 @@ import "./Header.css";
 
 const Header = () => {
   return (
+    <div className="headerContainer">
     <div className="fixed top">
       <div className="row">
         <nav className="navbar navbar-dark bg-dark ">
@@ -98,6 +99,7 @@ const Header = () => {
           </div>
         </nav>
       </div>
+    </div>
     </div>
   );
 };

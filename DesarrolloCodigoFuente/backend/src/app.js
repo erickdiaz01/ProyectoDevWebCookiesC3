@@ -15,15 +15,17 @@ app.use(express.json());
 
 
 //routes
-app.use("/api",require("./routes/auth"))
+
+
 app.use("/api/auth",require("./routes/auth"))
 
-app.use("/api/gestionventas",require("./routes/moduloAdminVentas"))
+app.use("/api/ventas",require("./routes/moduloAdminVentas"))
 app.use("/api/gestionpedidos",require("./routes/gestionPedidos"))
-app.use("/api/crearproducto",require("./routes/createProduct"))
-app.use("/api/modificarproducto",require("./routes/modificarProducto"))
+
+app.use("/api/productos",require("./routes/productos"))
+
 app.use("/api/historico-pedidos",require("./routes/historicoPedidos"))
-app.use("/api/verusuarios",require("./routes/verUsuarios"))
+
 app.use("/api/gestionusuarios",require("./routes/gestionUsuarios"))
 
 

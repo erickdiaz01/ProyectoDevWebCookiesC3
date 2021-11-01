@@ -3,10 +3,10 @@
     flex-direction: column;
     justify-content:center;
     align-items:center;
-    position: -webkit-sticky;
+    position: relative;
     
-    width: 100vw;
-    height: 200vh;
+    width: 100%;
+    height: 150vh;
     background-color: rgb(221, 171, 64);
   }
 
@@ -18,7 +18,7 @@
     flex-direction: column;
     justify-content: center;
     margin: auto;
-    position: absolute;
+    position: relative;
   }
 .tabla{
   justify-content: center;
