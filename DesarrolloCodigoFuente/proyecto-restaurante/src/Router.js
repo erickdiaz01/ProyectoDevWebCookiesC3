@@ -9,6 +9,7 @@ import CreateProduct from "./Pages/CreateProduct/CreateProduct";
 import ModificarProducto from "./Pages/ModificarProducto/ModificarProducto";
 import HistoricoPedidos from "./Pages/HistoricoPedidos/HistoricoPedidos";
 import VerUsuarios from "./Pages/VerUsuarios/VerUsuarios";
+import GestionUsuarios from "./Pages/GestionUsuarios/GestionUsuarios";
 
 const Router = () => {
   return (
@@ -17,14 +18,13 @@ const Router = () => {
         <Route exact path="/" component={CreateUser} />
         <Route path="/registeruser" component={CreateUser} />
         <Route path="/login" component={Login} />
-        <Route path="/gestionventas" component={ModuloAdminVentas}/>
-        <Route path="/gestionpedidos" component={GestionPedidos}/>
-        <Route path="/crearproducto" component={CreateProduct}/>
-        <Route path="/modificarproducto" component={ModificarProducto}/>
-        <Route path="/historico-pedidos" component={HistoricoPedidos}/>
-        <Route path="/verusuarios" component={VerUsuarios}/>
-
-
+        <Route path="/gestionventas" component={ModuloAdminVentas} />
+        <Route path="/gestionpedidos" component={GestionPedidos} />
+        <Route path="/crearproducto" component={CreateProduct} />
+        <Route path="/modificarproducto" component={ModificarProducto} />
+        <Route path="/historico-pedidos" component={HistoricoPedidos} />
+        <Route path="/verusuarios" component={VerUsuarios} />
+        <Route path="/gestionusuarios" component={GestionUsuarios} />
       </Switch>
     </BrowserRouter>
   );
