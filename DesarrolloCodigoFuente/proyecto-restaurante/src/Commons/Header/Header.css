@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
+.headerContainer{
+  width: 100%;
+}
 .logo-restaurante {
   height: 7%;
   width: 7%;
@@ -11,7 +14,10 @@
   grid-row: span;
   float:left;
 }
-
+.container-fluid{
+  width: 100%;
+  
+}
 .titulo-navbar {
   
   

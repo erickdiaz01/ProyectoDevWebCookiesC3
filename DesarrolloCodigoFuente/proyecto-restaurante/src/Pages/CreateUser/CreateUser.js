@@ -1,36 +1,78 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import {
+  crearUsuario,
+  listarRoles,
+  listarUsuarios,
+} from "../../services/Auth.service";
 import Title from "./components/Title/Title";
 import Label from "../Login/components/Label/Label";
-import Input from "./components/Input/Input";
+import Input from "../Login/components/Input/Input";
 //Importación de estilos
 import "./CreateUser.css";
+import useAuth from "../../hooks/useAuth";
+import axios from "axios";
+import  notie  from "notie";
 
 const CreateUser = () => {
+  const auth = useAuth();
+  const [usuarios, setUsuarios] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [user, setUser] = useState("");
-  const [idRol, setIdRol] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [numCel, setNumCel] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
-  const [fechaRolIngresoHistorico, setFechaRolIngresoHistorico] = useState("");
-  const [sexo, setsexo] = useState("");
-  const [rol, setRol] = useState("");
+  const [rol, setRol] = useState();
+  const [identificacion, setIdentificacion] = useState("");
+  const [ingreso, setIngreso] = useState("");
+  const [sexo, setSexo] = useState("");
   const [fechaNacimientoInvalid, setFechaNacimientoInvalid] = useState(false);
-  const [fechaRolIngresoHistoricoInvalid, setFechaRolIngresoHistoricoInvalid] =
-    useState(false);
   const [isRegister, setIsRegister] = useState(false);
-  const [idRolError, setIdRolError] = useState(false);
+  const [identificacionError, setIdRolError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [repeatPasswordError, setRepeatPasswordError] = useState(false);
   const [emailInvalid, setEmailInvalid] = useState(false);
   const [rolInvalid, setRolInvalid] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [sexoInvalid, setSexoInvalid] = useState(false);
+
+  const getUsuarios = async () => {
+    try {
+      const { data } = await listarUsuarios(auth.token);
+      console.log(data);
+      setUsuarios(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getRoles = async () => {
+    try {
+      const { data } = await listarRoles(auth.token);
+      console.log(data);
+      setRoles(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   function handleChange(name, value) {
-    if (name === "user") {
+    if (name === "rol") {
+      console.log(value);
+      if (value === "") {
+        setRolInvalid(true);
+      } else {
+        setRol(value);
+        setRolInvalid(false);
+      }
+    } else if (name === "sexo") {
+      if (value === "") {
+        setSexoInvalid(true);
+      } else {
+        setSexoInvalid(false);
+        setSexo(value);
+      }
+    } else if (name === "user") {
       setUser(value);
+      console.log(user);
     } else if (name === "password") {
       if (value.length < 6) {
         setPasswordError(true);
@@ -63,55 +105,74 @@ const CreateUser = () => {
         setFechaNacimientoInvalid(false);
         setFechaNacimiento(value);
       }
-    } else if (name === "numCel") {
-      setNumCel(value);
-    } else if (name === "idRol") {
+    } else if (name === "identificacion") {
       if (value.length < 5 || !/^[0-9]+$/.test(value)) {
         setIdRolError(true);
       } else {
-        setIdRol(value);
+        setIdentificacion(value);
         setIdRolError(false);
-      }
-    } else {
-      if (calcularEdad(value) < 0) {
-        setFechaRolIngresoHistoricoInvalid(true);
-      } else {
-        setFechaRolIngresoHistoricoInvalid(false);
-        setFechaRolIngresoHistorico(value);
       }
     }
   }
 
-  function handleSubmit() {
-    let account = {
-      user,
-      idRol,
-      password,
-      repeatPassword,
-      email,
-      numCel,
-      fechaNacimiento,
-      fechaRolIngresoHistorico,
-      sexo,
-      rol,
-    };
-    if (account) {
-      ifMatch(account);
-    }
-  }
-  function ifMatch(param) {
-    if (param.user.length > 3 && param.password.length >= 6) {
-      if (param.user === "ErickDiaz" && param.password === "Salem 14") {
+  useEffect(() => {
+    getUsuarios();
+    getRoles();
+  }, []);
+
+  async function handleSubmit() {
+    try {
+      let UserByEmail = await usuarios.find(
+        (usuario) => usuario.email === email
+      );
+      if (UserByEmail) {
         setIsRegister(true);
-      } else {
-        const { user, password } = param;
-        let ac = { user, password };
-        let account = JSON.stringify(ac);
-        localStorage.setItem("account", account);
-        setIsRegister(false);
+        notie.alert({
+          text: "Usuario ya registrado",
+          type: "warning",
+          time: 5,
+        });
+        return console.log("Usuario ya registrado");
       }
-    } else {
-      setHasError(true);
+      let rolUser = await roles.find((rol) => rol.name === rol);
+      let newUser = {
+        name: user,
+        identificacion: identificacion,
+        password: password,
+        confirmacionPassword: repeatPassword,
+        email: email,
+        nacimiento: fechaNacimiento,
+        sexo: sexo,
+        rol: rolUser,
+      };
+
+      const { data, status } = await axios.post(
+        "http://localhost:4000/api/auth/crearusuario",
+        newUser
+      );
+      console.log(newUser);
+      if (status === 200 || 201 || 204) {
+        notie.alert({ text: data.message, type: "success", time: 10 });
+        return console.log(newUser);
+      }
+    } catch (error) {
+      console.log(error);
+      console.log(error.toJSON());
+      console.log(error.response.status);
+      console.log(error.response.data);
+      if (error.response.status === 401) {
+        notie.alert({
+          text: error.response.data.message,
+          type: "warning",
+          time: 10,
+        });
+      } else {
+        notie.alert({
+          text: error.response.data.message,
+          type: "error",
+          time: 10,
+        });
+      }
     }
   }
 
@@ -127,10 +188,8 @@ const CreateUser = () => {
 
     return edad;
   }
-  function passwordValid(p) {
-    var contrasena = document.getElementsByName("password").values;
-    var p2 = p;
-    if (contrasena !== p2) {
+  function passwordValid(value) {
+    if (password !== value) {
       return false;
     } else {
       return true;
@@ -141,149 +200,166 @@ const CreateUser = () => {
     <div>
       <div className="register-container">
         <div className="register-content">
-          <Title text="Registro de roles" />
+          <Title text="Registro de usuarios" />
 
           {isRegister && (
             <label className="label-alert">
               Ya hay un registro con ese usuario.
             </label>
           )}
-          <Label text="Usuario" />
-          <Input
-            attribute={{
-              id: "user",
-              name: "user",
-              type: "text",
-              placeholder: "Ingrese un usuario",
-            }}
-            handleChange={handleChange}
-            required
-          />
-          <Label text="Número de identificación" />
-          <Input
-            attribute={{
-              id: "idRol",
-              name: "idRol",
-              type: "text",
-              placeholder: "Ingrese su ID",
-            }}
-            handleChange={handleChange}
-            param={idRolError}
-            required
-          />
-          {idRolError && <label className="label-error">ID no valido</label>}
-          <Label text="Contraseña" />
-          <Input
-            attribute={{
-              id: "password",
-              name: "password",
-              type: "password",
-              placeholder: "Ingrese una contraseña para registrarse",
-            }}
-            handleChange={handleChange}
-            param={passwordError}
-            required
-          />
-          {passwordError && (
-            <label className="label-error">
-              Contraseña invalida o incompleta
-            </label>
-          )}
-          <Label text="Ingrese nuevamente su contraseña" />
-          <Input
-            attribute={{
-              id: "repeatPassword",
-              name: "repeatPassword",
-              type: "password",
-              placeholder: "Ingrese nuevamente su contraseña",
-            }}
-            handleChange={handleChange}
-            param={repeatPasswordError}
-            required
-          />
-          {repeatPasswordError && (
-            <label className="label-error">Contraseñas no coinciden</label>
-          )}
-          <Label text="Ingrese su correo" />
-          <Input
-            attribute={{
-              id: "email",
-              name: "email",
-              type: "email",
-              placeholder: "Ingrese su correo",
-            }}
-            handleChange={handleChange}
-            param={emailInvalid}
-            required
-          />
-          {emailInvalid && (
-            <label className="label-error">Correo no valido</label>
-          )}
-          <Label text="Fecha de nacimiento" />
-          <Input
-            attribute={{
-              id: "fechaNacimiento",
-              name: "fechaNacimiento",
-              type: "date",
-              placeholder: "Ingrese su fecha de nacimiento",
-            }}
-            handleChange={handleChange}
-            param={fechaNacimientoInvalid}
-            required
-          />
-          {fechaNacimientoInvalid && (
-            <label className="label-error">
-              Tienes que ser mayor de 16 años
-            </label>
-          )}
-          <Label text="Sexo" />
-          <div className="input-container">
-            <select
-              required
-              id="sexo"
-              name="sexo"
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
-              className="regular-style"
-            >
-              <option value="M">Mujer</option>
-              <option value="H">Hombre</option>
-              <option value="O">Otro</option>
-            </select>
+          <br />
+          <br />
+          <div className="row">
+            <div className="col-md-6">
+              <Label text="Usuario" />
+              <Input
+                attribute={{
+                  id: "user",
+                  name: "user",
+                  type: "text",
+                  placeholder: "Ingrese su nombre",
+                }}
+                handleChange={handleChange}
+              />
+            </div>
+            <div className="col-md-6">
+              <Label text="Número de identificación" />
+              <Input
+                attribute={{
+                  id: "identificacion",
+                  name: "identificacion",
+                  type: "text",
+                  placeholder: "Ingrese su ID",
+                }}
+                handleChange={handleChange}
+                param={identificacionError}
+              />
+              {identificacionError && (
+                <label className="label-error">ID no valido</label>
+              )}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <Label text="Contraseña" />
+              <Input
+                attribute={{
+                  id: "password",
+                  name: "password",
+                  type: "password",
+                  placeholder: "Ingrese una contraseña para registrarse",
+                }}
+                handleChange={handleChange}
+                param={passwordError}
+              />
+              {passwordError && (
+                <label className="label-error">
+                  Contraseña invalida o incompleta
+                </label>
+              )}
+            </div>
+            <div className="col-md-6">
+              <Label text="Confirme  su contraseña" />
+              <Input
+                attribute={{
+                  id: "repeatPassword",
+                  name: "repeatPassword",
+                  type: "password",
+                  placeholder: "Ingrese nuevamente su contraseña",
+                }}
+                handleChange={handleChange}
+                param={repeatPasswordError}
+              />
+              {repeatPasswordError && (
+                <label className="label-error">Contraseñas no coinciden</label>
+              )}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <Label text="Correo electronico" />
+              <Input
+                attribute={{
+                  id: "email",
+                  name: "email",
+                  type: "email",
+                  placeholder: "Ingrese su correo",
+                }}
+                handleChange={handleChange}
+                param={emailInvalid}
+              />
+              {emailInvalid && (
+                <label className="label-error">Correo no valido</label>
+              )}
+            </div>
+            <div className="col-md-6">
+              <Label text="Fecha de nacimiento" />
+              <Input
+                attribute={{
+                  id: "fechaNacimiento",
+                  name: "fechaNacimiento",
+                  type: "date",
+                  placeholder: "Ingrese su fecha de nacimiento",
+                }}
+                handleChange={handleChange}
+                param={fechaNacimientoInvalid}
+              />
+              {fechaNacimientoInvalid && (
+                <label className="label-error">
+                  Tienes que ser mayor de 16 años
+                </label>
+              )}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <Label text="Sexo" />
+              <div className="input-container">
+                <select
+                  required
+                  id="sexo"
+                  name="sexo"
+                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  value={sexo}
+                  className={sexoInvalid ? "input-error" : "regular-style"}
+                >
+                  <option value=""></option>
+                  <option value="M">Mujer</option>
+                  <option value="H">Hombre</option>
+                  <option value="O">Otro</option>
+                </select>
+                {sexoInvalid && (
+                  <label className="label-error">Sexo obligatorio</label>
+                )}
+              </div>
+            </div>
+            <div className="col-md-6">
+              <Label text="Rol" />
+              <div className="input-container">
+                <select
+                  required
+                  id="rol"
+                  name="rol"
+                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  value={rol}
+                  className={rolInvalid ? "input-error" : "regular-style"}
+                >
+                  <option value=""></option>
+                  <option value="6187440898f2d08c80ae537f">Cajero</option>
+                  <option value="61763b69b176073c2a7202cd">Vendedor</option>
+                  <option value="6187440898f2d08c80ae537f">Mesero</option>
+                  <option value="6187441a98f2d08c80ae5380">Domiciliario</option>
+                  <option value="6175ca2afe66858d6c5671e1" disabled>
+                    Administrador
+                  </option>
+                </select>
+                {rolInvalid && (
+                  <label className="label-error">Rol obligatorio</label>
+                )}
+              </div>
+            </div>
           </div>
 
-          <Label text="Rol" />
-          <div className="input-container">
-            <select
-              required
-              id="rol"
-              name="rol"
-              onChange={(e) => handleChange(e.target.name, e.target.value)}
-              className="regular-style"
-            >
-              <option value="cajero">Cajero</option>
-              <option value="vendedor">Vendedor</option>
-              <option value="mesero">Mesero</option>
-              <option value="domiciliario">Domiciliario</option>
-              <option value="administrador" disabled>
-                Administrador
-              </option>
-            </select>
-          </div>
-          <Label text="Fecha de ingreso" />
-          <Input
-            attribute={{
-              id: "fechaRolIngresoHistorico",
-              name: "fechaRolIngresoHistorico",
-              type: "date",
-              placeholder: "Ingrese su fecha de ingreso",
-            }}
-            handleChange={handleChange}
-            param={fechaRolIngresoHistoricoInvalid}
-            required
-          />
-          {fechaRolIngresoHistoricoInvalid && (
-            <label className="label-error">Fecha de ingreso invalida</label>
-          )}
           <div className="submit-button-container">
             <button onClick={handleSubmit} className="submit-button">
               Registrarse
