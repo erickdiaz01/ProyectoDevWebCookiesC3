@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 import Label from "../Login/components/Label/Label";
 import { Table } from "react-bootstrap";
-import Input from "../CreateUser/components/Input/Input";
+import Input from "../Login/components/Input/Input";
 
 import "./VerUsuarios.css";
 import Title from "../CreateUser/components/Title/Title";
@@ -25,13 +25,12 @@ const VerUsuarios = () => {
 
   const getUsuarios = async () => {
     try {
-      
       const { data } = await listarUsuarios(auth.token);
 
-      console.log(data)
+      console.log(data);
       setUsuarios(data);
       setTablaUsuarios(data);
-      console.log(usuarios)
+      console.log(usuarios);
     } catch ({ response: error }) {
       console.log(error);
       if (error.status === 401) {
@@ -44,23 +43,32 @@ const VerUsuarios = () => {
       }
     }
   };
-  function conversionRol(value){
-    if(value==="6175ca2afe66858d6c5671e1"){
-      let rol = "Administrador"
-      return rol
-    }else if(value==="61763b69b176073c2a7202cd"){
-      let rol="Vendedor"
-      return rol
-    }else{
-      let rol="Indefinido"
-      return rol
+  function conversionRol(value) {
+    if (value === "6175ca2afe66858d6c5671e1") {
+      let rol = "Administrador";
+      return rol;
+    } else if (value === "61763b69b176073c2a7202cd") {
+      let rol = "Vendedor";
+      return rol;
+    } else if (value === "618743f598f2d08c80ae537e") {
+      let rol = "Cajero";
+      return rol;
+    } else if (value === "6187440898f2d08c80ae537f") {
+      let rol = "Mesero";
+      return rol;
+    } else if (value === "6187441a98f2d08c80ae5380") {
+      let rol = "Domiciliario";
+      return rol;
+    } else {
+      let rol = "Indefinido";
+      return rol;
     }
   }
 
-  const handleDelete = (id) => {
-    console.log("id", id);
+  const handleDelete = async (usuario) => {
+    console.log("usuario", usuario);
 
-    Swal.fire({
+    await Swal.fire({
       title: "Eliminar Usuario",
       text: "¿Esta seguro que desea eliminar el Usuario?",
       showCancelButton: true,
@@ -70,17 +78,27 @@ const VerUsuarios = () => {
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       console.log(result);
-      const { data } = await eliminarUsuario(auth.token, id);
-      setUsuarios(data.usuarios);
-      if (result.value) {
-        Swal.fire("¡Hecho!", "El usuario ha sido eliminado", "success");
+      if (result.isConfirmed) {
+        let listaUsuarios = usuarios;
+        listaUsuarios.map(async (usuarioLista) => {
+          if (usuario._id === usuarioLista._id) {
+            const { data } = await eliminarUsuario(auth.token, usuario._id);
+            if (data) {
+              getUsuarios();
+            }
+          }
+        });
       }
+
+      Swal.fire("¡Hecho!", "El usuario ha sido eliminado", "success");
+      return true
     });
   };
   const filtrar = (terminoBusqueda) => {
-    let resultadosBusqueda = tablaUsuarios?.filter((elemento) => {
-      let inde = usuarios.find(elem => (elem.index + 1) === terminoBusqueda);
-      if (inde) {
+    let resultadosBusqueda = tablaUsuarios.filter((elemento) => {
+      let rolUser = elemento.rol._id;
+
+      if (elemento._id.toString().includes(terminoBusqueda)) {
         return elemento;
       } else if (
         elemento.name
@@ -89,23 +107,19 @@ const VerUsuarios = () => {
           .includes(terminoBusqueda.toLowerCase())
       ) {
         return elemento;
-      } else if (
-        elemento.rol.name
-          .toString()
-          .toLowerCase()
-          .includes(terminoBusqueda.toLowerCase())
-      ) {
+      } else if (rolUser.toString().includes(terminoBusqueda)) {
         return elemento;
       }
     });
     setUsuarios(resultadosBusqueda);
   };
+
   function handleChange(name, value) {
     if (name === "busquedaIdUsuario") {
       setBusquedaIdUsuario(value);
       filtrar(value);
       console.log(value);
-    } else if (name === "busquedaEstado") {
+    } else if (name === "busquedaRol") {
       setBusquedaRol(value);
       filtrar(value);
       console.log(value);
@@ -147,15 +161,17 @@ const VerUsuarios = () => {
               <select
                 id="busquedaRol"
                 name="busquedaRol"
-                onChange={handleChange}
+                onChange={(e) => handleChange(e.target.name, e.target.value)}
                 value={busquedaRol}
                 className="regular-style"
               >
-                <option value="Activo">Vendedor</option>
-                <option value="Inactivo">Administrador</option>
-                <option value="Inactivo">Cajero</option>
-                <option value="Inactivo">Mesero</option>
-                <option value="Inactivo">Domiciliario</option>
+                <option value=""></option>
+                <option value="61763b69b176073c2a7202cd">Vendedor</option>
+                <option value="6175ca2afe66858d6c5671e1">Administrador</option>
+                <option value="618743f598f2d08c80ae537e">Cajero</option>
+                <option value="6187440898f2d08c80ae537f">Mesero</option>
+                <option value="6187441a98f2d08c80ae5380">Domiciliario</option>
+                <option value="61759f0c42205b65b5e04409">Indefinido</option>
               </select>
             </div>
           </div>
@@ -197,16 +213,16 @@ const VerUsuarios = () => {
               </tr>
             </thead>
             <tbody>
-              {usuarios?.map((usuarios, index) => (
+              {handleDelete&&usuarios?.map((usuarios, index) => (
                 <tr key={usuarios._id}>
                   <th scope="row">{index + 1}</th>
                   <td>{usuarios.name}</td>
-                  <td>{conversionRol(usuarios.rol)}</td>
+                  <td>{conversionRol(usuarios.rol._id)}</td>
                   <td>{usuarios.createdAt}</td>
                   <td>
                     <Link
                       className="btn btn-primary mr-3"
-                      to={`/auth/verusuarios/${usuarios._id}`}
+                      to={`/auth/editarusuario/${usuarios._id}`}
                     >
                       <i className="bi bi-pencil-square"></i>
                     </Link>
@@ -216,7 +232,7 @@ const VerUsuarios = () => {
                       type="button"
                       className="btn btn btn-danger mr-3"
                       data="data de pruebas"
-                      onClick={() => handleDelete(usuarios._id)}
+                      onClick={() => handleDelete(usuarios)}
                     >
                       <i className="bi bi-trash-fill"></i>
                     </button>

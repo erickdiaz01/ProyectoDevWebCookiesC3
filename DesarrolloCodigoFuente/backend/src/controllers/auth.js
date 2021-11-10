@@ -22,14 +22,14 @@ const crearUsuario = async (req, resp = response) => {
     if (usuario) {
       return resp.status(400).json({
         ok: false,
-        msg: "ya existe un usuario registrado con este email",
+        message: "ya existe un usuario registrado con este email",
       });
     }
 
     if (password != confirmacionPassword) {
       return resp.status(400).json({
         ok: false,
-        msg: "Las passwords no coinciden",
+        message: "Las passwords no coinciden",
       });
     }
     usuario = new User(req.body);
@@ -42,7 +42,7 @@ const crearUsuario = async (req, resp = response) => {
 
     resp.status(201).json({
       ok: true,
-      msg: "Usuario creado de manera exitosa",
+      message: "Usuario creado de manera exitosa",
       uid: usuario.id,
       name: usuario.name,
     });
@@ -50,7 +50,7 @@ const crearUsuario = async (req, resp = response) => {
     console.log(error);
     resp.status(500).json({
       ok: false,
-      msg: "error al guardar el registro",
+      message: "error al guardar el registro",
     });
   }
 };
@@ -66,7 +66,7 @@ const loginUsuario = async (req, resp = response) => {
     if (!usuario) {
       resp.status(400).json({
         ok: true,
-        msg: "Usuario o password erradas",
+        message: "Usuario o password erradas",
       });
     }
 
@@ -77,7 +77,7 @@ const loginUsuario = async (req, resp = response) => {
     if (!validPassword) {
       resp.status(400).json({
         ok: false,
-        msg: "Usuario o password erradas",
+        message: "Usuario o password erradas",
       });
     }
 
@@ -86,7 +86,7 @@ const loginUsuario = async (req, resp = response) => {
 
     resp.json({
       ok: true,
-      msg: "Ok",
+      message: "Ok",
       uid: usuario.id,
       name: usuario.name,
       token,
@@ -95,7 +95,7 @@ const loginUsuario = async (req, resp = response) => {
     console.log(error);
     resp.status(500).json({
       ok: false,
-      msg: "error al autenticar",
+      message: "error al autenticar",
     });
   }
 };
@@ -128,7 +128,7 @@ const validarUsuarioGoogle = async (req, resp = response) => {
       if (usuario.rol.name === "Indefinido") {
         resp.status(401).json({
           ok: false,
-          msg: "El usuario aun no ha sido autorizado por el administrador",
+          message: "El usuario aun no ha sido autorizado por el administrador",
         });
       } else {
         /**Generar Token */
@@ -136,7 +136,7 @@ const validarUsuarioGoogle = async (req, resp = response) => {
 
         resp.json({
           ok: true,
-          msg: "Ok",
+          message: "Ok",
           uid: usuario.id,
           name: usuario.name,
           token,
@@ -148,7 +148,7 @@ const validarUsuarioGoogle = async (req, resp = response) => {
       const newUser = await usuario.save();
       resp.status(201).json({
         ok: true,
-        msg: "Usuario creado de manera exitosa, para poder acceder comuniquese con el administrador",
+        message: "Usuario creado de manera exitosa, para poder acceder comuniquese con el administrador",
         uid: usuario.id,
         name: usuario.name,
       });
@@ -157,13 +157,13 @@ const validarUsuarioGoogle = async (req, resp = response) => {
     console.log(error);
     resp.status(500).json({
       ok: false,
-      msg: "error al autenticar",
+      message: "error al autenticar",
     });
   }
 };
 
 const getUsuarios = async (req, resp = response) => {
-  const usuario = await User.find();
+  const usuario = await User.find().populate("rol");
   resp.json(usuario);
 };
 
@@ -191,7 +191,7 @@ const editarUsuario = async (req, resp = response) => {
     if (password != confirmacionPassword) {
       return resp.status(400).json({
         ok: false,
-        msg: "Las passwords no coinciden",
+        message: "Las passwords no coinciden",
       });
     }
     const salt = bcrypt.genSaltSync();
@@ -212,7 +212,7 @@ const editarUsuario = async (req, resp = response) => {
     );
     resp.status(201).json({
       ok: true,
-      msg: "Usuario editado de manera exitosa",
+      message: "Usuario editado de manera exitosa",
       uid: usuario.id,
       name: usuario.name,
     });
@@ -220,16 +220,22 @@ const editarUsuario = async (req, resp = response) => {
     console.log(error);
     resp.status(500).json({
       ok: false,
-      msg: "error al editar el usuario",
+      message: "error al editar el usuario",
     });
   }
 };
 
 const eliminarUsuario = async (req, resp = response) => {
-  await User.findOneAndDelete(req.params.id);
-  resp.json({ message: "Usuario eliminado" });
+  let usuario = await User.findById(req.params.id);
+  usuario.delete();
+  // await User.findOneAndDelete(req.params.id);
+  resp.json({ message: "Usuario eliminado" , usuario});
 };
 
+const getRoles = async (req, resp = response) => {
+  const roles = await Rol.find();
+  resp.json(roles);
+};
 module.exports = {
   crearUsuario,
   loginUsuario,
@@ -239,4 +245,5 @@ module.exports = {
   getUsuarios,
   editarUsuario,
   eliminarUsuario,
+  getRoles
 };

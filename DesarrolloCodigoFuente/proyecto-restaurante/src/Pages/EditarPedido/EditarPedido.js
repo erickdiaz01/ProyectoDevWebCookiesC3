@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import InputOnlyRead from "../ModificarProducto/InputOnlyRead/InputOnlyRead";
 import Input from "../Login/components/Input/Input";
 import Label from "../Login/components/Label/Label";
 import Title from "../Login/components/Title/Title";
@@ -9,14 +10,16 @@ import Swal from "sweetalert2";
 import "notie/dist/notie.css";
 import useAuth from "../../hooks/useAuth";
 import { listarProductos } from "../../services/Productos.service";
-import { listarClientes } from "../../services/ModuloAdmin.service";
-import "./ModuloAdminVentas.css";
+import { listarClientes, verPedido } from "../../services/ModuloAdmin.service";
+import "../ModuloAdminVentas/ModuloAdminVentas.css";
 import axios from "axios";
+import { set } from "express/lib/application";
 
-const ModuloAdminVentas = () => {
+const EditarPedido = () => {
   const auth = useAuth();
   const [carroCompras, setCarroCompras] = useState([]);
   const [listaProductos, setListaProductos] = useState([]);
+  const [pedidos, setPedidos] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [valorTotalVenta, setValorTotalVenta] = useState("");
   const [producto, setProductos] = useState([]);
@@ -130,7 +133,44 @@ const ModuloAdminVentas = () => {
   //   total=+ costoProducto*cantidadProducto
   //   setValorTotalVenta(total)
   // }
-  var total = 0;
+  let total = 0;
+
+  async function getPedido() {
+    try {
+      var idPedido = window.location.pathname.substring(
+        23,
+        window.location.pathname.length
+      );
+      console.log(idPedido);
+
+      const { data } = await verPedido(auth.token, idPedido);
+      console.log(data);
+
+      setPedidos(data);
+      await setCarroCompras(data.productos);
+      setListaProductos(data.productos);
+      setValorTotalVenta(data.valorTotal);
+
+      let cliente = data.cliente;
+      setNombreCliente(cliente.name);
+      setIdCliente(cliente.identificacion);
+      setDireccionCliente(data.direccion);
+      setModoPago(data.modoPago);
+
+      console.log(pedidos);
+      console.log(listaProductos);
+    } catch ({ response: error }) {
+      console.log(error);
+      if (error.status === 401) {
+        setTimeout(() => {
+          auth.logout();
+        }, 3000);
+        notie.alert({ text: error.data.msg, type: "warning", time: 3 });
+      } else {
+        notie.alert({ text: error.data.msg, type: "error", time: 3 });
+      }
+    }
+  }
   async function handleAgregar(resp) {
     try {
       if (nombreProductoInvalid || cantidadInvalid) {
@@ -166,14 +206,13 @@ const ModuloAdminVentas = () => {
         });
         setValorTotalVenta(total);
       }
-
+      console.log(total);
       console.log(carroCompras);
       console.log(listaProductos);
     } catch (error) {
       console.log(error);
     }
   }
-  console.log(valorTotalVenta);
 
   async function handleSubmit() {
     try {
@@ -183,13 +222,11 @@ const ModuloAdminVentas = () => {
         direccionClienteInvalid ||
         modoPagoInvalid
       ) {
-        notie.alert({
+        return notie.alert({
           text: "Llene todos los campos requeridos",
           type: "warning",
           time: 3,
         });
-        return console.log("Llene todos los campos requeridos")
-       
       }
       let cliente = clientes.find(
         (client) => client.identificacion === idCliente
@@ -203,15 +240,16 @@ const ModuloAdminVentas = () => {
           modoPago: modoPago,
           entregado: false,
         };
-        const { data, status } = await axios.post(
-          "http://localhost:4000/api/ventas/pedidos/crear",
+        const { data, status } = await axios.put(
+          `http://localhost:4000/api/ventas/verpedidos/editarventa/${pedidos._id}`,
           newFactura
         );
         if (status === 200 || 201 || 204) {
-          notie.alert({ text: data.message, type: "success", time: 10 });
-          return console.log(newFactura);
+          console.log(newFactura);
+          return notie.alert({ text: data.message, type: "success", time: 10 });
         }
-      } else {
+      }
+      if (!cliente) {
         let newCliente = {
           name: nombreCliente,
           identificacion: idCliente,
@@ -220,34 +258,27 @@ const ModuloAdminVentas = () => {
           "http://localhost:4000/api/clientes/crear",
           newCliente
         );
-        if (status === (200 || 201 )|| 204) {
+        if (status === 200 || 201 || 204) {
           console.log(newCliente);
           notie.alert({ text: data.message, type: "success", time: 5 });
-          let clienteNuevo = await clientes.find(
-            (client) => client.identificacion === idCliente
+        }
+        let clienteNuevo = await clientes.find(
+          (client) => client.identificacion === idCliente
+        );
+        if (clienteNuevo) {
+          let newFactura = {
+            valorTotal: valorTotalVenta,
+            cliente: clienteNuevo,
+            productos: listaProductos,
+            direccion: direccionCliente,
+            modoPago: modoPago,
+          };
+          await axios.put(
+            `http://localhost:4000/api/ventas/verpedidos/editarventa/${pedidos._id}`,
+            newFactura
           );
-          console.log(clienteNuevo)
-          if (clienteNuevo) {
-            let newFactura = {
-              valorTotal: valorTotalVenta,
-              cliente: clienteNuevo,
-              productos: listaProductos,
-              direccion: direccionCliente,
-              modoPago: modoPago,
-            };
-            const { status } = await axios.post(
-              "http://localhost:4000/api/ventas/pedidos/crear",
-              newFactura
-            );
-            if (status === 200 || 201 || 204) {
-              console.log(newFactura);
-              notie.alert({
-                text: data.message,
-                type: "success",
-                time: 10,
-              });
-            }
-          }
+          console.log(newFactura);
+          return notie.alert({ text: data.message, type: "success", time: 10 });
         }
       }
     } catch (error) {
@@ -270,7 +301,6 @@ const ModuloAdminVentas = () => {
       }
     }
   }
-
   function handleDelete(index) {
     let valorADescontar =
       listaProductos[index].producto.costo * listaProductos[index].cantidad;
@@ -288,14 +318,12 @@ const ModuloAdminVentas = () => {
   useEffect(() => {
     getProductos();
     getClientes();
+    getPedido();
   }, []);
   return (
     <div className="moduloAdminVentas-container">
       <div className="moduloAdminVentas-content">
-        <Title text="Gestion de ventas" />
-        <header className="title-container">
-          <h2>(Si es un nuevo cliente, ingrese los datos del cliente sin nigun producto y cree el pedido primero)</h2>
-        </header>
+        <Title text="Modificar Pedido" />
         <div className="row">
           <div className="col-md-6">
             <header className="title-container">
@@ -366,6 +394,16 @@ const ModuloAdminVentas = () => {
               <br />
               <h3>Información del pedido</h3>
             </header>
+            <Label text="ID Pedido" />
+            <InputOnlyRead
+              attribute={{
+                id: "idPedido",
+                name: "idPedido",
+                type: "text",
+                placeholder: `${pedidos._id}`,
+                default: `${pedidos._id}`,
+              }}
+            />
             <Table striped bordered hover responsive className="tabla">
               <thead>
                 <tr>
@@ -419,6 +457,7 @@ const ModuloAdminVentas = () => {
                       name: "nombreCliente",
                       type: "text",
                       placeholder: "Ingrese el nombre del cliente",
+                      defaultValue: `${nombreCliente}`,
                     }}
                     handleChange={handleChange}
                     param={nombreClienteInvalid}
@@ -435,6 +474,7 @@ const ModuloAdminVentas = () => {
                       name: "direccionCliente",
                       type: "text",
                       placeholder: "Ingrese la dirección del cliente",
+                      defaultValue: `${direccionCliente}`,
                     }}
                     handleChange={handleChange}
                     param={direccionClienteInvalid}
@@ -455,6 +495,7 @@ const ModuloAdminVentas = () => {
                       name: "identificacionCliente",
                       type: "text",
                       placeholder: "Ingrese la identificación del cliente",
+                      defaultValue: `${idCliente}`,
                     }}
                     handleChange={handleChange}
                     param={idClienteInvalid}
@@ -473,6 +514,7 @@ const ModuloAdminVentas = () => {
                     onChange={(e) =>
                       handleChange(e.target.name, e.target.value)
                     }
+                    default={modoPago}
                     className={
                       modoPagoInvalid ? "input-error" : "regular-style"
                     }
@@ -498,7 +540,7 @@ const ModuloAdminVentas = () => {
             <section className="row">
               <div className="submit-button-container">
                 <button onClick={handleSubmit} className="submit-button">
-                  Crear Pedido
+                  Actualizar Pedido
                 </button>
               </div>
             </section>
@@ -509,4 +551,4 @@ const ModuloAdminVentas = () => {
   );
 };
 
-export default ModuloAdminVentas;
+export default EditarPedido;

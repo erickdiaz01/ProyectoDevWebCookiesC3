@@ -2,20 +2,23 @@ import React, { useEffect, useState } from "react";
 import {
   crearUsuario,
   listarRoles,
+  listarUsuario,
   listarUsuarios,
 } from "../../services/Auth.service";
-import Title from "./components/Title/Title";
+import Title from "../CreateUser/components/Title/Title";
 import Label from "../Login/components/Label/Label";
 import Input from "../Login/components/Input/Input";
 //Importación de estilos
-import "./CreateUser.css";
+import "../CreateUser/CreateUser.css";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
+import InputOnlyRead from "../ModificarProducto/InputOnlyRead/InputOnlyRead";
 import  notie  from "notie";
 
-const CreateUser = () => {
+const EditUser = () => {
   const auth = useAuth();
   const [usuarios, setUsuarios] = useState([]);
+  const [usuario, setUsuario] = useState({});
   const [roles, setRoles] = useState([]);
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
@@ -39,7 +42,7 @@ const CreateUser = () => {
     try {
       const { data } = await listarUsuarios(auth.token);
       console.log(data);
-      setUsuarios(data);
+      await setUsuarios(data);
     } catch (error) {
       console.log(error);
     }
@@ -49,6 +52,27 @@ const CreateUser = () => {
       const { data } = await listarRoles(auth.token);
       console.log(data);
       setRoles(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getUsuario = async () => {
+    try {
+      let idUsuario = window.location.pathname.substring(
+        20,
+        window.location.pathname.length
+      );
+      const { data } = await listarUsuario(auth.token, idUsuario);
+      setUsuario(data);
+      setUser(data.name);
+      setIdentificacion(data.identificacion);
+      setEmail(data.email);
+      setSexo(data.sexo);
+      setRol(data.rol);
+      setFechaNacimiento(data.nacimiento);
+      console.log(data);
+      //   setUser(data);
     } catch (error) {
       console.log(error);
     }
@@ -118,23 +142,13 @@ const CreateUser = () => {
   useEffect(() => {
     getUsuarios();
     getRoles();
+    getUsuario();
   }, []);
 
   async function handleSubmit() {
     try {
-      let UserByEmail = await usuarios.find(
-        (usuario) => usuario.email === email
-      );
-      if (UserByEmail) {
-        setIsRegister(true);
-        notie.alert({
-          text: "Usuario ya registrado",
-          type: "warning",
-          time: 5,
-        });
-        return console.log("Usuario ya registrado");
-      }
-      let rolUser = await roles.find((rol) => rol.name === rol);
+      let rolUser = await roles.find((rolEnLista) => rol === rolEnLista._id);
+      console.log(rolUser);
       let newUser = {
         name: user,
         identificacion: identificacion,
@@ -144,17 +158,20 @@ const CreateUser = () => {
         nacimiento: fechaNacimiento,
         sexo: sexo,
         rol: rolUser,
+        fechaIngreso:usuario.fechaIngreso
       };
 
-      const { data, status } = await axios.post(
-        "http://localhost:4000/api/auth/crearusuario",
+      const { data, status } = await axios.put(
+        `http://localhost:4000/api/auth/verusuarios/editar/${usuario._id}`,
         newUser
       );
-      console.log(newUser);
       if (status === 200 || 201 || 204) {
         notie.alert({ text: data.message, type: "success", time: 10 });
+        console.log("usuario actualizado", newUser);
         return console.log(newUser);
+        
       }
+      
     } catch (error) {
       console.log(error);
       console.log(error.toJSON());
@@ -174,6 +191,11 @@ const CreateUser = () => {
         });
       }
     }
+    // let UserByEmail = await usuarios.find((usuario) => usuario.email === email);
+    // if (UserByEmail) {
+    //   setIsRegister(true);
+    //   return console.log("Usuario ya registrado");
+    // }
   }
 
   function calcularEdad(valor) {
@@ -195,20 +217,44 @@ const CreateUser = () => {
       return true;
     }
   }
-
+  function confirmarSelectedRol(valor) {
+    if (valor === usuario.rol._id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  function confirmarSelectedSexo(valor) {
+    if (valor === usuario.sexo) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   return (
     <div>
       <div className="register-container">
         <div className="register-content">
-          <Title text="Registro de usuarios" />
+          <Title text={`Actualizacion info de ${usuario.name}`} />
 
-          {isRegister && (
+          {/* {isRegister && (
             <label className="label-alert">
               Ya hay un registro con ese usuario.
             </label>
-          )}
+          )} */}
           <br />
           <br />
+          <div className="row">
+            <InputOnlyRead
+              attribute={{
+                id: "idUsuario",
+                name: "idUsuario",
+                type: "text",
+                placeholder: `${usuario._id}`,
+                default: `${usuario._id}`,
+              }}
+            />
+          </div>
           <div className="row">
             <div className="col-md-6">
               <Label text="Usuario" />
@@ -218,6 +264,7 @@ const CreateUser = () => {
                   name: "user",
                   type: "text",
                   placeholder: "Ingrese su nombre",
+                  defaultValue: usuario.name,
                 }}
                 handleChange={handleChange}
               />
@@ -230,6 +277,7 @@ const CreateUser = () => {
                   name: "identificacion",
                   type: "text",
                   placeholder: "Ingrese su ID",
+                  defaultValue: usuario.identificacion,
                 }}
                 handleChange={handleChange}
                 param={identificacionError}
@@ -284,6 +332,7 @@ const CreateUser = () => {
                   name: "email",
                   type: "email",
                   placeholder: "Ingrese su correo",
+                  defaultValue: usuario.email,
                 }}
                 handleChange={handleChange}
                 param={emailInvalid}
@@ -323,10 +372,28 @@ const CreateUser = () => {
                   value={sexo}
                   className={sexoInvalid ? "input-error" : "regular-style"}
                 >
-                  <option value=""></option>
-                  <option value="M">Mujer</option>
-                  <option value="H">Hombre</option>
-                  <option value="O">Otro</option>
+                  <option
+                    value=""
+                    // selected={(e) => confirmarSelectedSexo(e.value)}
+                  ></option>
+                  <option
+                    value="M"
+                    // selected={(e) => confirmarSelectedSexo(e.value)}
+                  >
+                    Mujer
+                  </option>
+                  <option
+                    value="H"
+                    // selected={(e) => confirmarSelectedSexo(e.value)}
+                  >
+                    Hombre
+                  </option>
+                  <option
+                    value="O"
+                    // selected={(e) => confirmarSelectedSexo(e.value)}
+                  >
+                    Otro
+                  </option>
                 </select>
                 {sexoInvalid && (
                   <label className="label-error">Sexo obligatorio</label>
@@ -345,11 +412,35 @@ const CreateUser = () => {
                   className={rolInvalid ? "input-error" : "regular-style"}
                 >
                   <option value=""></option>
-                  <option value="6187440898f2d08c80ae537f">Cajero</option>
-                  <option value="61763b69b176073c2a7202cd">Vendedor</option>
-                  <option value="6187440898f2d08c80ae537f">Mesero</option>
-                  <option value="6187441a98f2d08c80ae5380">Domiciliario</option>
-                  <option value="6175ca2afe66858d6c5671e1" disabled>
+                  <option
+                    // selected={(value) => confirmarSelectedRol(value)}
+                    value="6187440898f2d08c80ae537f"
+                  >
+                    Cajero
+                  </option>
+                  <option
+                    value="61763b69b176073c2a7202cd"
+                    // selected={(value) => confirmarSelectedRol(value)}
+                  >
+                    Vendedor
+                  </option>
+                  <option
+                    value="6187440898f2d08c80ae537f"
+                    // selected={(value) => confirmarSelectedRol(value)}
+                  >
+                    Mesero
+                  </option>
+                  <option
+                    value="6187441a98f2d08c80ae5380"
+                    // selected={(value) => confirmarSelectedRol(value)}
+                  >
+                    Domiciliario
+                  </option>
+                  <option
+                    value="6175ca2afe66858d6c5671e1"
+                    // selected={(value) => confirmarSelectedRol(value)}
+                    disabled
+                  >
                     Administrador
                   </option>
                 </select>
@@ -362,7 +453,7 @@ const CreateUser = () => {
 
           <div className="submit-button-container">
             <button onClick={handleSubmit} className="submit-button">
-              Registrarse
+              Actualizar el usuario
             </button>
           </div>
         </div>
@@ -371,4 +462,4 @@ const CreateUser = () => {
   );
 };
 
-export default CreateUser;
+export default EditUser;

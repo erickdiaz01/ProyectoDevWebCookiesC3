@@ -1,7 +1,6 @@
 import React from "react";
 import { Redirect, Route } from "react-router";
-import Footer from "../Commons/Footer/Footer";
-import Header from "../Commons/Header/Header";
+
 import useAuth from "../hooks/useAuth";
 
 // const user = null;

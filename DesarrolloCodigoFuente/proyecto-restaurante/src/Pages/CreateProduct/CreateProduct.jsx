@@ -67,17 +67,44 @@ const CreateProduct = () => {
     }
   }
   async function handleSubmit() {
-    let newProduct = {
-      categoria: categoria,
-      nombre: nombre,
-      cantidad: cantidad,
-      costo: costo,
-      descripcion: descripcion,
-      imagen: imagen,
-    };
+    try {
+      let newProduct = {
+        categoria: categoria,
+        nombre: nombre,
+        cantidad: cantidad,
+        costo: costo,
+        descripcion: descripcion,
+        imagen: imagen,
+      };
 
-    axios.post(`http://localhost:4000/api/productos/crear`, newProduct);
-    console.log(newProduct);
+      const { data, status } = await axios.post(
+        `http://localhost:4000/api/productos/crear`,
+        newProduct
+      );
+      console.log(newProduct);
+      if (status === 200 || 201 || 204) {
+        notie.alert({ text: "Producto creado con exito!", type: "success", time: 10 });
+        return console.log(newProduct);
+      }
+    } catch (error) {
+      console.log(error);
+      
+      console.log(error.response.status);
+      console.log(error.response.data);
+      if (error.response.status === 401) {
+        notie.alert({
+          text: error.response.data.message,
+          type: "warning",
+          time: 10,
+        });
+      } else {
+        notie.alert({
+          text: error.response.data.message,
+          type: "error",
+          time: 10,
+        });
+      }
+    }
   }
 
   return (

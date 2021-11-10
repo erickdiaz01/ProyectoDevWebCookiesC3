@@ -12,6 +12,9 @@ import Header from "../Commons/Header/Header";
 import Footer from "../Commons/Footer/Footer";
 import Navegacion from "../Commons/Navegacion/Navegacion";
 import EditProduct from "../Pages/EditarProduct/EditarProduct";
+import EditarPedido from "../Pages/EditarPedido/EditarPedido";
+import VerClientes from "../Pages/VerClientes/VerClientes";
+import EditUser from "../Pages/EditarUsuario/EditarUsuario";
 
 export const ContentRouter = () => {
   return (
@@ -22,6 +25,7 @@ export const ContentRouter = () => {
       <Switch>
         <Route exact path="/" component={CreateUser} />
         <Route path="/auth/crearusuario" component={CreateUser} />
+        <Route path="/auth/editarusuario/:id" component={EditUser}/>
         <Route path="/ventas/crearventa" component={ModuloAdminVentas} />
         <Route path="/ventas/gestionpedidos" component={GestionPedidos} />
         <Route path="/productos/crearproducto" component={CreateProduct} />
@@ -30,7 +34,8 @@ export const ContentRouter = () => {
         <Route path="/auth/verusuarios" component={VerUsuarios} />
         <Route path="/auth/gestionusuarios" component={GestionUsuarios} />
         <Route path="/productos/editar/:id" component={EditProduct} />
-
+        <Route path="/clientes/verclientes" component={VerClientes} />
+        <Route path="/ventas/pedidos/editar/:id" component={EditarPedido} />
         <Redirect to="/productos/verproductos" />
       </Switch>
       <Footer />

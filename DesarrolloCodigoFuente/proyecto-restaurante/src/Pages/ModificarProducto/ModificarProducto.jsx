@@ -43,10 +43,10 @@ const ModificarProducto = () => {
     }
   };
 
-  const handleDelete = (id) => {
-    console.log("id", id);
+  const handleDelete = async (productoEliminar) => {
+    console.log("producto", productoEliminar);
 
-    Swal.fire({
+    await Swal.fire({
       title: "Eliminar Producto",
       text: "¿Esta seguro que desea eliminar el producto?",
       showCancelButton: true,
@@ -56,10 +56,18 @@ const ModificarProducto = () => {
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       console.log(result);
-      const { data } = await eliminarProducto(auth.token, id);
-      setProductos(data.productos);
-      if (result.value) {
+      if (result.isConfirmed) {
+        let listaProductos = producto;
+        listaProductos.map(async (productoLista) => {
+          if (productoEliminar._id === productoLista._id) {
+            const { data } = await eliminarProducto(auth.token, productoEliminar._id);
+            if (data) {
+              getProductos();
+            }
+          }
+        });
         Swal.fire("¡Hecho!", "El producto ha sido eliminado", "success");
+        return true
       }
     });
   };
@@ -80,8 +88,6 @@ const ModificarProducto = () => {
   }
   const filtrar = (terminoBusqueda) => {
     let resultadosBusqueda = tablaProductos.filter((elemento) => {
-      
-      
       let categoria = elemento.categoria.name;
       if (elemento._id.toString().includes(terminoBusqueda)) {
         return elemento;
@@ -132,7 +138,6 @@ const ModificarProducto = () => {
                 className="regular-style"
                 value={busquedaCategoria}
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
-                
               >
                 <option value=""></option>
                 <option value="Fritos">Fritos</option>
@@ -158,7 +163,6 @@ const ModificarProducto = () => {
               }}
               handleChange={handleChange}
               value={busquedaNombre}
-             
             />
           </div>
           <div className="col-md-1">
@@ -187,7 +191,7 @@ const ModificarProducto = () => {
               </tr>
             </thead>
             <tbody>
-              {producto?.map((producto) => (
+              {handleDelete&&producto?.map((producto) => (
                 <tr key={producto._id}>
                   <th scope="row">{producto._id}</th>
                   <td>{producto.categoria.name}</td>
@@ -208,7 +212,7 @@ const ModificarProducto = () => {
                       type="button"
                       className="btn btn btn-danger mr-3"
                       data="data de pruebas"
-                      onClick={() => handleDelete(producto._id)}
+                      onClick={() => handleDelete(producto)}
                     >
                       <i className="bi bi-trash-fill"></i>
                     </button>

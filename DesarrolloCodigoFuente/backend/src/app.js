@@ -20,14 +20,15 @@ app.use(express.json());
 app.use("/api/auth",require("./routes/auth"))
 
 app.use("/api/ventas",require("./routes/moduloAdminVentas"))
-app.use("/api/gestionpedidos",require("./routes/gestionPedidos"))
+// app.use("/api/pedidos",require("./routes/gestionPedidos"))
 
 app.use("/api/productos",require("./routes/productos"))
 
-app.use("/api/historico-pedidos",require("./routes/historicoPedidos"))
+// app.use("/api/historico-pedidos",require("./routes/historicoPedidos"))
 
 app.use("/api/gestionusuarios",require("./routes/gestionUsuarios"))
 
+app.use("/api/clientes",require("./routes/clientes"))
 
 
 

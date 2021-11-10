@@ -20,7 +20,7 @@ const facturaSchema = new Schema(
           ref: "creacionProducto",
           required: true,
         },
-        cantidadProducto: {
+        cantidad: {
           type: Number,
           required: true,
         },
@@ -32,7 +32,15 @@ const facturaSchema = new Schema(
     entregado:{
         type:Boolean,
         default:false
+    },
+    direccion:{
+      type:String,
+      required:true},
+    modoPago:{
+      type:String,
+      required:true
     }
+
   },
   {
     timestamps: true,

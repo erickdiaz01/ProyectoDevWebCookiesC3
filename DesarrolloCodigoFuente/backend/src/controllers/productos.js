@@ -11,15 +11,16 @@ const crearProducto = async (req, resp = response) => {
     if (newProduct) {
       return resp.status(400).json({
         ok: false,
-        msg: "Ya existe el producto",
+        message: "Ya existe el producto",
       });
     }
+    
     newProduct = new createProduct(req.body);
     await newProduct.save();
 
     resp.status(201).json({
       ok: true,
-      msg: "producto creado",
+      message: "producto creado",
       id,
       categoria,
       nombre,
@@ -32,7 +33,7 @@ const crearProducto = async (req, resp = response) => {
     console.log(error);
     resp.status(500).json({
       ok: false,
-      msg: "Error al guardar producto",
+      message: "Error al guardar producto",
     });
   }
 };
@@ -50,7 +51,7 @@ const getProductos = async (req, resp = response) => {
 
     resp.status(200).json({
         ok: true,
-        msg: 'Lista de Productos',
+        message: 'Lista de Productos',
         productos
     });
 }
@@ -60,18 +61,22 @@ const getProducto = async (req, res) => {
   res.json(producto);
 };
 
-const editarProducto = async (req, res) => {
+const editarProducto = async (req, resp=response) => {
   const { categoria, nombre, descripcion, costo, cantidad } = req.body;
   await createProduct.findOneAndUpdate(
     { _id: req.params.id },
     { categoria, nombre, descripcion, costo, cantidad }
   );
-  res.json({ message: "producto editado" });
+ 
+    resp.json({ message: "Producto editado con exito!"});
+  
 };
 
-const eliminarProducto = async (req, res) => {
-  await createProduct.findOneAndDelete(req.params.id);
-  res.json({ message: "Producto eliminado" });
+const eliminarProducto = async (req, resp=Response) => {
+  let producto = await createProduct.findById(req.params.id)
+  producto.delete();
+  // await createProduct.findOneAndDelete(req.params.id);
+  resp.json({ message: "Producto eliminado", producto });
 };
 
 module.exports = {

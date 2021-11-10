@@ -96,7 +96,7 @@ function Navegacion() {
                 aria-labelledby="navbarDarkDropdownMenuLink"
               >
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="/clientes/verclientes">
                     Ver clientes
                   </a>
                 </li>

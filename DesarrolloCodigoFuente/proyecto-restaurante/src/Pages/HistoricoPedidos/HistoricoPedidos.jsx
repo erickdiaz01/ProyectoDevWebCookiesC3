@@ -1,13 +1,126 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Label from "../Login/components/Label/Label";
 import { Table } from "react-bootstrap";
-import Input from "../CreateUser/components/Input/Input";
+import Input from "../Login/components/Input/Input";
+import { Link } from "react-router-dom";
 
 import Title from "../CreateUser/components/Title/Title";
 import "./historicopedidos.css";
+import notie from "notie";
+import Swal from "sweetalert2";
+import "notie/dist/notie.css";
+import useAuth from "../../hooks/useAuth";
+import {
+  eliminarPedido,
+  listarClientes,
+  listarPedidos,
+} from "../../services/ModuloAdmin.service";
 
 const HistoricoPedidos = () => {
+  const auth = useAuth();
+
+  const [clientes, setClientes] = useState([]);
+  const [pedidos, setPedidos] = useState([]);
+  const [tablaPedidos, setTablaPedidos] = useState([]);
+  const [busquedaIdPedidoHistorico, setBusquedaIdPedidoHistorico] =
+    useState("");
+  const [busquedaFecha, setBusquedaFecha] = useState("");
+  const [busquedaIdCliente, setBusquedaIdCliente] = useState("");
+
+  const getPedidos = async () => {
+    try {
+      const { data } = await listarPedidos(auth.token);
+      let pedidosEntregadosArreglo = [];
+      let pedidosEntregados = data.pedidos.map((pedido) => {
+        if (pedido.entregado === true) {
+          pedidosEntregadosArreglo.push(pedido);
+        }
+      });
+
+      console.log(data);
+      console.log(pedidosEntregadosArreglo);
+      setPedidos(pedidosEntregadosArreglo);
+      setTablaPedidos(pedidosEntregadosArreglo);
+      console.log(pedidos);
+    } catch ({ response: error }) {
+      console.log(error);
+      if (error.status === 401) {
+        setTimeout(() => {
+          auth.logout();
+        }, 3000);
+        notie.alert({ text: error.data.msg, type: "warning", time: 3 });
+      } else {
+        notie.alert({ text: error.data.msg, type: "error", time: 3 });
+      }
+    }
+  };
+  const handleDelete = async (pedido) => {
+    console.log("pedido", pedido);
+
+    await Swal.fire({
+      title: "Eliminar Pedido",
+      text: "¿Esta seguro que desea eliminar el Pedido?",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      console.log(result);
+      if (result.isConfirmed) {
+        let listaPedidos = pedidos;
+        listaPedidos.map(async (pedidoLista) => {
+          if (pedido._id === pedidoLista._id) {
+            const { data } = await eliminarPedido(auth.token, pedido._id);
+            if (data) {
+              getPedidos();
+            }
+          }
+        });
+        Swal.fire("¡Hecho!", "El pedido ha sido eliminado", "success");
+        return true;
+      }
+    });
+  };
+  function handleChange(name, value) {
+    if (name === "busquedaIdPedidoHistorico") {
+      setBusquedaIdPedidoHistorico(value);
+      filtrar(value);
+      console.log(value);
+    } else if (name === "busquedaFecha") {
+      setBusquedaFecha(value);
+      filtrar(value);
+      console.log(value);
+    } else if (name === "busquedaDocumentoCliente") {
+      setBusquedaIdCliente(value);
+      filtrar(value);
+      console.log(value);
+    }
+  }
+  const filtrar = (terminoBusqueda) => {
+    let resultadosBusqueda = tablaPedidos.filter((elemento) => {
+      console.log(elemento);
+      if (elemento._id.toString().includes(terminoBusqueda.toString())) {
+        return elemento;
+      } else if (
+        elemento.cliente.identificacion
+          .toString()
+          .includes(terminoBusqueda.toString())
+      ) {
+        return elemento;
+      } else if (
+        elemento.fechaVenta.toString().includes(terminoBusqueda.toString())
+      ) {
+        return elemento;
+      }
+    });
+    setPedidos(resultadosBusqueda);
+  };
+
+  useEffect(() => {
+    getPedidos();
+  }, []);
   return (
     <div className="gestion-pedidos-container">
       <div className="gestion-pedidos-content">
@@ -24,7 +137,8 @@ const HistoricoPedidos = () => {
                 type: "search",
                 placeholder: "Busque por ID del pedido",
               }}
-              //    handleChange={handleChange}
+              handleChange={handleChange}
+              value={busquedaIdPedidoHistorico}
               // param={fechaRolIngresoHistoricoInvalid}
             />
           </div>
@@ -37,20 +151,23 @@ const HistoricoPedidos = () => {
                 type: "search",
                 placeholder: "Busque por # de documento del cliente",
               }}
-              //    handleChange={handleChange}
+              handleChange={handleChange}
+              value={busquedaIdCliente}
               // param={fechaRolIngresoHistoricoInvalid}
             />
           </div>
           <div className="col-md-3">
-            <Label text="Nombre del cliente" />
+            <Label text="Fecha de pedido" />
+
             <Input
               attribute={{
-                id: "busquedaNombreCliente",
-                name: "busquedaNombreCliente",
-                type: "search",
-                placeholder: "Busque por nombre del cliente",
+                id: "busquedaFecha",
+                name: "busquedaFecha",
+                type: "date",
+                placeholder: "Busque por fecha",
               }}
-              // handleChange={handleChange}
+              handleChange={handleChange}
+              value={busquedaFecha}
               // param={fechaRolIngresoHistoricoInvalid}
             />
           </div>
@@ -71,72 +188,39 @@ const HistoricoPedidos = () => {
               <tr>
                 <th>#ID Pedido</th>
                 <th>Fecha del pedido</th>
+                <th>Productos</th>
                 <th>Cliente</th>
-                <th>Descripcion del pedido</th>
                 <th>Valor del pedido</th>
-                <th>Editar</th>
+                <th>Eliminar</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>535</td>
-                <td>07/10/2021</td>
+              {pedidos?.map((pedido) => (
+                <tr key={pedido._id}>
+                  <th scope="row">{pedido._id}</th>
+                  <td>{pedido.fechaVenta}</td>
+                  <td>
+                    <ul>
+                      {pedido.productos?.map((producto) => (
+                        <li>{`${producto.producto.nombre} x${producto.cantidad}`}</li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td>{pedido.cliente.name}</td>
+                  <td>{pedido.valorTotal}</td>
 
-                <td>Erick Diaz</td>
-                <td>
-                  Arroz amarillo con verduras y pollo, Mondongo con arroz aparte{" "}
-                </td>
-                <td>31.000</td>
-                <td>
-                  <a href="#">
-                    <i className="bi bi-pencil-square"></i>
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td>534</td>
-                <td>06/10/2021</td>
-                
-                <td>Carlos Rodriguez</td>
-                <td>Pollo, Gaseosa 1.5L, Carne asada</td>
-                <td>39.000</td>
-                <td>
-                  <a href="#">
-                    <i className="bi bi-pencil-square"></i>
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td>533</td>
-                <td>06/10/2021</td>
-                
-                <td>Nicol Quiñonez</td>
-                <td>
-                  Pechuga a la plancha x2, Carne asada, Ajiaco x3, Jarra
-                  limonada{" "}
-                </td>
-                <td>52.000</td>
-                <td>
-                  <a href="#">
-                    <i className="bi bi-pencil-square"></i>
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td>532</td>
-                <td>05/10/2021</td>
-                
-                <td>Alvaro Rueda</td>
-                <td>
-                   Salchipas especial
-                </td>
-                <td>10.000</td>
-                <td>
-                  <a href="#">
-                    <i className="bi bi-pencil-square"></i>
-                  </a>
-                </td>
-              </tr>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn btn btn-danger mr-3"
+                      data="data de pruebas"
+                      onClick={() => handleDelete(pedido)}
+                    >
+                      <i className="bi bi-trash-fill"></i>
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </section>

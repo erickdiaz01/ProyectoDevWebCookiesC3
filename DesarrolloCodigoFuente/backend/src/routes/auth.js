@@ -14,6 +14,7 @@ const {
   eliminarUsuario,
   revalidarToken,
   validarUsuarioGoogle,
+  getRoles,
 } = require("../controllers/auth");
 
 
@@ -33,7 +34,7 @@ router.post(
     check("password", "La password debe ser de 6 caracteres").isLength({
       min: 6,
     }),
-    validarCampos,
+    validarCampos
   ],
   loginUsuario
 );
@@ -57,10 +58,10 @@ router.post(
 router.put(
   "/verusuarios/editar/:id",
   [
-    check("name", "El name es obligatorio").not().isEmpty(),
+    check("name", "El nombre es obligatorio").not().isEmpty(),
     check("email", "El email es obligatorio").isEmail(),
     check("password", "La password es obligatoria").isInt(),
-    check("confirmacionpassword", "La de la password es obligatoria")
+    check("confirmacionPassword", "La de la password es obligatoria")
       .not()
       .isEmpty(),
     check("identificacion", "La identificacion es obligatoria").not().isEmpty(),
@@ -69,6 +70,7 @@ router.put(
       .isEmpty(),
     check("sexo", "El sexo es obligatorio").not().isEmpty(),
     check("rol", "El rol es obligatorio").not().isEmpty(),
+    check("fechaIngreso", "El ingreso es obligatorio").not().isEmpty(),
     validarCampos,
   ],
   editarUsuario
@@ -80,4 +82,5 @@ router.get("/verusuarios/:id", getUsuario);
 
 router.delete("/verusuarios/eliminar/:id", eliminarUsuario);
 
+router.get("/roles", getRoles)
 module.exports = router;

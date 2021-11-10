@@ -31,7 +31,7 @@ export const verProducto = async(token,id) => {
 
 
 
-export const eliminarProducto = async(productoId, token) => {    
+export const eliminarProducto = async(token,productoId ) => {    
     
     try {
         return await axios({

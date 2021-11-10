@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content:center;
     align-items:center;
-    position: relative;
+    position: -webkit-sticky;
     
     width: 100%;
     height: 150vh;
@@ -14,12 +14,13 @@
   .moduloAdminVentas-content {
     width: 80%;
     height: 100%;
-    display: flex;
+    display: flexbox;
     flex-direction: column;
     justify-content: center;
     margin: auto;
-    position: relative;
+    position: absolute;
   }
+
 .tabla{
   justify-content: center;
   align-items: center;
