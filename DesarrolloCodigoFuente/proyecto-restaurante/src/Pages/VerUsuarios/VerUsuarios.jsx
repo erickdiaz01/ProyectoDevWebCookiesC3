@@ -50,10 +50,10 @@ const VerUsuarios = () => {
     } else if (value === "61763b69b176073c2a7202cd") {
       let rol = "Vendedor";
       return rol;
-    } else if (value === "618743f598f2d08c80ae537e") {
+    } else if (value === "6187440898f2d08c80ae537f") {
       let rol = "Cajero";
       return rol;
-    } else if (value === "6187440898f2d08c80ae537f") {
+    } else if (value === "618743f598f2d08c80ae537e") {
       let rol = "Mesero";
       return rol;
     } else if (value === "6187441a98f2d08c80ae5380") {
@@ -168,8 +168,8 @@ const VerUsuarios = () => {
                 <option value=""></option>
                 <option value="61763b69b176073c2a7202cd">Vendedor</option>
                 <option value="6175ca2afe66858d6c5671e1">Administrador</option>
-                <option value="618743f598f2d08c80ae537e">Cajero</option>
-                <option value="6187440898f2d08c80ae537f">Mesero</option>
+                <option value="6187440898f2d08c80ae537f">Cajero</option>
+                <option value="618743f598f2d08c80ae537e">Mesero</option>
                 <option value="6187441a98f2d08c80ae5380">Domiciliario</option>
                 <option value="61759f0c42205b65b5e04409">Indefinido</option>
               </select>

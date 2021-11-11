@@ -45,7 +45,7 @@ const Login = () => {
         auth.setToken(data.token);
         auth.setUser({ uid: data.uid, name: data.name });
       } else if (status === 201) {
-        notie.alert({ text: data.msg, type: "success", time: 10 });
+        notie.alert({ text: data.message, type: "success", time: 10 });
       }
     } catch (error) {
       //    console.log(error);
@@ -56,12 +56,12 @@ const Login = () => {
 
       if (error.response.status === 401) {
         notie.alert({
-          text: error.response.data.msg,
+          text: error.response.data.message,
           type: "warning",
           time: 10,
         });
       } else {
-        notie.alert({ text: error.response.data.msg, type: "error", time: 10 });
+        notie.alert({ text: error.response.data.message, type: "error", time: 10 });
       }
     }
   };
@@ -88,7 +88,7 @@ const Login = () => {
         auth.setToken(data.token);
         auth.setUser({ uid: data.uid, name: data.name });
       } else if (status === 201) {
-        notie.alert({ text: data.msg, type: "success", time: 10 });
+        notie.alert({ text: data.message, type: "success", time: 10 });
       }
     } catch (error) {
          console.log(error);
@@ -99,12 +99,12 @@ const Login = () => {
 
       if (error.response.status === 401) {
         notie.alert({
-          text: error.response.data.msg,
+          text: error.response.data.message,
           type: "warning",
           time: 10,
         });
       } else {
-        notie.alert({ text: error.response.data.msg, type: "error", time: 10 });
+        notie.alert({ text: error.response.data.message, type: "error", time: 10 });
       }
     }
   };
@@ -204,7 +204,7 @@ const Login = () => {
           </div>
           <div className="d-flex justify-content-around mb-3">
             <GoogleLogin
-              clientId="824425476103-qrc3oegr5rsjf692oob3ka47c2nqc527.apps.googleusercontent.com"
+              clientId="824425476103-5dbk8p9i571u0jpejf75o5rq0lhkbfuh.apps.googleusercontent.com"
               buttonText="Iniciar sesión con Google"
               onClick={responseGoogle}
               onSuccess={responseGoogle}

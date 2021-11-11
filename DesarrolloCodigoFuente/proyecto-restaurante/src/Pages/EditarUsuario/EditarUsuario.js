@@ -13,7 +13,7 @@ import "../CreateUser/CreateUser.css";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import InputOnlyRead from "../ModificarProducto/InputOnlyRead/InputOnlyRead";
-import  notie  from "notie";
+import notie from "notie";
 
 const EditUser = () => {
   const auth = useAuth();
@@ -101,6 +101,7 @@ const EditUser = () => {
       if (value.length < 6) {
         setPasswordError(true);
       } else {
+        
         setPassword(value);
         setPasswordError(false);
       }
@@ -158,7 +159,7 @@ const EditUser = () => {
         nacimiento: fechaNacimiento,
         sexo: sexo,
         rol: rolUser,
-        fechaIngreso:usuario.fechaIngreso
+        fechaIngreso: usuario.fechaIngreso,
       };
 
       const { data, status } = await axios.put(
@@ -169,9 +170,7 @@ const EditUser = () => {
         notie.alert({ text: data.message, type: "success", time: 10 });
         console.log("usuario actualizado", newUser);
         return console.log(newUser);
-        
       }
-      
     } catch (error) {
       console.log(error);
       console.log(error.toJSON());
@@ -287,42 +286,7 @@ const EditUser = () => {
               )}
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-6">
-              <Label text="Contraseña" />
-              <Input
-                attribute={{
-                  id: "password",
-                  name: "password",
-                  type: "password",
-                  placeholder: "Ingrese una contraseña para registrarse",
-                }}
-                handleChange={handleChange}
-                param={passwordError}
-              />
-              {passwordError && (
-                <label className="label-error">
-                  Contraseña invalida o incompleta
-                </label>
-              )}
-            </div>
-            <div className="col-md-6">
-              <Label text="Confirme  su contraseña" />
-              <Input
-                attribute={{
-                  id: "repeatPassword",
-                  name: "repeatPassword",
-                  type: "password",
-                  placeholder: "Ingrese nuevamente su contraseña",
-                }}
-                handleChange={handleChange}
-                param={repeatPasswordError}
-              />
-              {repeatPasswordError && (
-                <label className="label-error">Contraseñas no coinciden</label>
-              )}
-            </div>
-          </div>
+         
           <div className="row">
             <div className="col-md-6">
               <Label text="Correo electronico" />
