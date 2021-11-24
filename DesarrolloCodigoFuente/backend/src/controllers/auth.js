@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const { response } = require("express");
-const Rol = require('../models/Rol');
+const Rol = require("../models/Rol");
 const bcrypt = require("bcryptjs");
 const { generarJWT } = require("../helpers/jwt");
 
@@ -117,10 +117,7 @@ const validarUsuarioGoogle = async (req, resp = response) => {
 
   try {
     /**Confirmar email */
-    let usuario = await User.findOne({ email, idToken: uid }).populate(
-      "rol"
-    );
-    
+    let usuario = await User.findOne({ email, idToken: uid }).populate("rol");
 
     if (usuario) {
       console.log(usuario);
@@ -148,7 +145,8 @@ const validarUsuarioGoogle = async (req, resp = response) => {
       const newUser = await usuario.save();
       resp.status(201).json({
         ok: true,
-        message: "Usuario creado de manera exitosa, para poder acceder comuniquese con el administrador",
+        message:
+          "Usuario creado de manera exitosa, para poder acceder comuniquese con el administrador",
         uid: usuario.id,
         name: usuario.name,
       });
@@ -173,36 +171,27 @@ const getUsuario = async (req, resp = response) => {
 };
 
 const editarUsuario = async (req, resp = response) => {
-  const {
-    name,
-    identificacion,
-    password,
-    confirmacionPassword,
-    email,
-    nacimiento,
-    sexo,
-    rol,
-    fechaIngreso,
-  } = req.body;
-
   try {
-    let usuario = await User.findOne({ email });
+    let {
+      name,
+      identificacion,
+      email,
+      nacimiento,
+      sexo,
+      rol,
+      fechaIngreso,
+    } = req.body;
 
-    if (password != confirmacionPassword) {
-      return resp.status(400).json({
-        ok: false,
-        message: "Las passwords no coinciden",
-      });
-    }
-    const salt = bcrypt.genSaltSync();
-    usuario.password = bcrypt.hashSync(password, salt);
+    let usuario = User.find({ email });
+    
+
+    
+
     await User.findOneAndUpdate(
       { _id: req.params.id },
       {
         name,
         identificacion,
-        password,
-        confirmacionPassword,
         email,
         nacimiento,
         sexo,
@@ -210,6 +199,7 @@ const editarUsuario = async (req, resp = response) => {
         fechaIngreso,
       }
     );
+  
     resp.status(201).json({
       ok: true,
       message: "Usuario editado de manera exitosa",
@@ -229,7 +219,7 @@ const eliminarUsuario = async (req, resp = response) => {
   let usuario = await User.findById(req.params.id);
   usuario.delete();
   // await User.findOneAndDelete(req.params.id);
-  resp.json({ message: "Usuario eliminado" , usuario});
+  resp.json({ message: "Usuario eliminado", usuario });
 };
 
 const getRoles = async (req, resp = response) => {
@@ -245,5 +235,5 @@ module.exports = {
   getUsuarios,
   editarUsuario,
   eliminarUsuario,
-  getRoles
+  getRoles,
 };

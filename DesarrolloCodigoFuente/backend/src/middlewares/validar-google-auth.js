@@ -1,7 +1,7 @@
 const { response } = require('express');
 const { OAuth2Client } = require('google-auth-library');
 
-const client = new OAuth2Client('824425476103-qrc3oegr5rsjf692oob3ka47c2nqc527.apps.googleusercontent.com');
+const client = new OAuth2Client('824425476103-5dbk8p9i571u0jpejf75o5rq0lhkbfuh.apps.googleusercontent.com');
 
 const validarGoogleAuth = (req, res = response, next) => {
 
@@ -20,7 +20,7 @@ const validarGoogleAuth = (req, res = response, next) => {
     }
 
     try {
-        client.verifyIdToken({ idToken: token, audience: '824425476103-qrc3oegr5rsjf692oob3ka47c2nqc527.apps.googleusercontent.com' })
+        client.verifyIdToken({ idToken: token, audience: '824425476103-5dbk8p9i571u0jpejf75o5rq0lhkbfuh.apps.googleusercontent.com' })
             .then((response) => {
 
                 const { sub, name, email } = response.payload;

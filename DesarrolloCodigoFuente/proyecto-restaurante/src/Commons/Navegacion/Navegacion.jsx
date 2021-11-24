@@ -101,11 +101,7 @@ function Navegacion() {
                   </a>
                 </li>
 
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Preguntas y comentarios
-                  </a>
-                </li>
+                
               </ul>
             </li>
           </ul>
@@ -137,20 +133,13 @@ function Navegacion() {
                     Ver usuarios
                   </a>
                 </li>
-                <li>
-                  <a className="dropdown-item" href="/auth/gestionusuarios">
-                    Gestionar usuarios
-                  </a>
-                </li>
+                
               </ul>
             </li>
           </ul>
         </div>
         <a className="navbar-brand" href="#">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button class="btn btn-dark me-md-2" type="button">
-              Generar reportes
-            </button>
             <button className="btn btn-outline-danger" onClick={auth.logout}>
                 <i className="fas fa-sign-out-alt"></i>
                 <span> Salir</span>

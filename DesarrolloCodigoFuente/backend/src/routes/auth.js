@@ -60,10 +60,6 @@ router.put(
   [
     check("name", "El nombre es obligatorio").not().isEmpty(),
     check("email", "El email es obligatorio").isEmail(),
-    check("password", "La password es obligatoria").isInt(),
-    check("confirmacionPassword", "La de la password es obligatoria")
-      .not()
-      .isEmpty(),
     check("identificacion", "La identificacion es obligatoria").not().isEmpty(),
     check("nacimiento", "La fecha de nacimiento es obligatoria")
       .not()
